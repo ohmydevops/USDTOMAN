@@ -217,7 +217,7 @@ html[dir="rtl"] thead th[colspan="2"] {
   direction: ltr;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: nowrap;
   gap: 0;
 }
