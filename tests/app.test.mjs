@@ -31,6 +31,19 @@ function createApp(saved = {}, intl = Intl) {
   return { app: factory(), root, historyUrl: () => historyUrl };
 }
 
+test("lookup input rejects zero while allowing the field to be cleared", () => {
+  const { app } = createApp();
+  app.updateExplorerPrice("0");
+  assert.equal(app.explorerPrice, "");
+  app.updateExplorerPrice("20000");
+  app.updateExplorerPrice("۰");
+  assert.equal(app.explorerPrice, "20000");
+  app.updateExplorerPrice("٠٠");
+  assert.equal(app.explorerPrice, "20000");
+  app.updateExplorerPrice("");
+  assert.equal(app.explorerPrice, "");
+});
+
 test("lookup input displays grouped digits in the selected language", () => {
   const { app } = createApp();
   app.updateExplorerPrice("20000");

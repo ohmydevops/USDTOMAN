@@ -514,9 +514,9 @@
             <h2 id="explorer-title" class="text-lg font-semibold" x-text="t.explorer"></h2>
             <button type="button" class="icon-button" @click="$refs.explorerDialog.close()" :aria-label="t.close">✕</button>
           </header>
-          <div class="lookup-fields mt-4 grid grid-cols-1 sm:grid-cols-[minmax(180px,1fr)_minmax(0,1fr)] items-end gap-3">
-            <label class="lookup-asset text-xs text-muted" for="explorer-series"><span x-text="t.series"></span><select id="explorer-series" x-model="explorerSeries" class="mt-2 block max-w-[140px] rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink" autofocus><option value="dollar" x-text="t.lookupDollar"></option><option value="gold" x-text="t.lookupGold"></option><option value="coin" x-text="t.lookupCoin"></option></select></label>
-            <label class="text-xs text-muted" for="explorer-price"><span x-text="t.lookupPrice"></span><input id="explorer-price" type="text" inputmode="numeric" :value="explorerPriceDisplay" @input="updateExplorerPrice($event.target.value); $event.target.value=explorerPriceDisplay" :placeholder="t.lookupHint" :dir="lang==='fa'?'rtl':'ltr'" class="mt-2 block w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink" /></label>
+          <div class="lookup-fields mt-4 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-end gap-2 sm:gap-3">
+            <label class="lookup-asset text-xs text-muted" for="explorer-series"><span x-text="t.series"></span><select id="explorer-series" x-model="explorerSeries" class="mt-2 block max-w-[140px] rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink"><option value="dollar" x-text="t.lookupDollar"></option><option value="gold" x-text="t.lookupGold"></option><option value="coin" x-text="t.lookupCoin"></option></select></label>
+            <label class="text-xs text-muted" for="explorer-price"><span x-text="t.lookupPrice"></span><input id="explorer-price" type="text" inputmode="numeric" :value="explorerPriceDisplay" @input="updateExplorerPrice($event.target.value); $event.target.value=explorerPriceDisplay" :placeholder="t.lookupHint" :dir="lang==='fa'?'rtl':'ltr'" class="mt-2 block w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink" autofocus /></label>
           </div>
           <div class="explorer-results mt-4" aria-live="polite" tabindex="0">
             <p class="text-sm text-muted" x-show="!data" x-text="error?t.error:t.explorerLoading"></p>

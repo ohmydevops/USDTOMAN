@@ -357,6 +357,7 @@ html[dir="rtl"] thead th[colspan="2"] {
 }
 .lookup-asset select {
   appearance: none;
+  font-size: 12px;
   padding-inline-end: 32px;
 }
 .lookup-asset::after {

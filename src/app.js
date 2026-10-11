@@ -420,7 +420,7 @@ document.addEventListener("alpine:init", () =>
     },
     updateExplorerPrice(value) {
       const normalized = String(value).replace(/[۰-۹]/g, digit => "۰۱۲۳۴۵۶۷۸۹".indexOf(digit)).replace(/[٠-٩]/g, digit => "٠١٢٣٤٥٦٧٨٩".indexOf(digit)).replace(/[,٬\s]/g, "");
-      if (/^\d*$/.test(normalized) && Number.isSafeInteger(Number(normalized))) this.explorerPrice = normalized;
+      if (normalized === "" || (/^\d+$/.test(normalized) && Number.isSafeInteger(Number(normalized)) && Number(normalized) > 0)) this.explorerPrice = normalized;
     },
     get explorerPriceDisplay() {
       return this.explorerPrice === "" ? "" : numberFormatter(this.locale, { maximumFractionDigits: 0 }).format(Number(this.explorerPrice));
