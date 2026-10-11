@@ -57,7 +57,7 @@ table[data-series="wage"] thead button.category-minimum,
 table[data-series="wage"] thead button.category-maximum {
   color: var(--ink);
 }
-@media (max-width: 639px) {
+@media (max-width: 1023px) {
   tbody td:nth-child(5),
   tbody td:nth-child(6),
   thead th[colspan="2"] {
@@ -180,28 +180,38 @@ html[dir="rtl"] thead th[colspan="2"] {
 }
 
 * {
+  --scrollbar-thumb: color-mix(in srgb, var(--accent) 70%, var(--surface));
+  --scrollbar-track: color-mix(in srgb, var(--line) 55%, var(--surface));
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--accent) 40%, var(--surface))
-    var(--surface);
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   scrollbar-gutter: stable;
 }
+@supports selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+}
 *::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
+  height: 10px;
 }
 *::-webkit-scrollbar-track {
-  background: var(--surface);
-  border-radius: 8px;
+  background: var(--scrollbar-track);
+  border-radius: 999px;
 }
 *::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--accent) 40%, var(--surface));
-  border: 2px solid var(--surface);
-  border-radius: 8px;
+  background: var(--scrollbar-thumb);
+  border-radius: 999px;
+  min-height: 32px;
 }
 *::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
 }
 *::-webkit-scrollbar-button {
   display: none;
+  width: 0;
+  height: 0;
 }
 .government-portraits {
   direction: ltr;
@@ -254,11 +264,20 @@ html[dir="rtl"] thead th[colspan="2"] {
 }
 .government-details-arrow {
   position: absolute;
-  right: -3px;
-  bottom: -3px;
+  right: -2px;
+  bottom: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
+  border: 1px solid var(--line);
   background: var(--surface);
+  color: var(--accent);
+  box-shadow: 0 0 0 1px var(--surface);
   font-size: 10px;
+  font-weight: 600;
   line-height: 12px;
 }
 .government-trigger {
@@ -270,7 +289,13 @@ html[dir="rtl"] thead th[colspan="2"] {
   margin: auto;
   padding: 0;
   max-height: 85dvh;
+  overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  clip-path: inset(0 round 1rem);
+}
+.modal-dialog::-webkit-scrollbar-track {
+  margin-block: 12px;
 }
 .modal-dialog::backdrop {
   background: rgb(16 23 19 / 55%);

@@ -162,14 +162,6 @@
         </nav>
       </header>
       <p
-        class="mb-3 shrink-0 text-[10px] leading-5 text-muted sm:text-xs"
-        x-text="t.introduction"
-      >
-        من همیشه مشکل این که دلار ۲۰ هزار تومانی برای چه موقعی بوده رو داشتم.
-        یکبار برای همیشه گفتم یک چیزی دم دستم باشه که نیاز نباشه سرچ کنم همش.
-        این سایت رو درست کردم.
-      </p>
-      <p
         class="mb-3 shrink-0 text-[11px] text-muted"
         x-show="data"
         x-text="data?t.coverage+' '+formatDate(data.latestDate)+' ('+daysAgo(data.latestDate)+')':''"
@@ -209,7 +201,7 @@
               <template x-for="column in columns" :key="column.key"
                 ><th
                   scope="col"
-                  :class="column.key==='government'?'w-[16%] sm:w-[12%]':column.key==='year'?'w-[14%] sm:w-[9%]':column.key==='maximum'?'w-[40%] sm:w-[29%]':'w-[30%] sm:w-[26%]'"
+                  :class="column.key==='government'?'w-[16%] lg:w-[12%]':column.key==='year'?'w-[64px] lg:w-[9%]':column.key==='maximum'?'w-[40%] lg:w-[29%]':'w-[30%] lg:w-[26%]'"
                   :aria-sort="column.key==='government'?null:sortKey===column.key?(ascending?'ascending':'descending'):'none'"
                 >
                   <span
@@ -241,7 +233,7 @@
               <th
                 scope="colgroup"
                 colspan="2"
-                class="hidden w-[24%] px-1 py-2 text-center font-medium sm:table-cell sm:px-2"
+                class="hidden w-[24%] px-1 py-2 text-center font-medium lg:table-cell sm:px-2"
               >
                 <div
                   class="grid grid-cols-[1fr_auto_1fr] items-center gap-1 whitespace-nowrap"
@@ -298,7 +290,7 @@
               >
                 <td
                   dir="ltr"
-                  class="px-2 py-1.5 text-center text-sm sm:text-base font-medium tabular-nums sm:px-4 sm:py-2"
+                  class="px-2 py-1.5 text-center text-sm sm:text-base font-medium tabular-nums lg:px-4 sm:py-2"
                 >
                   <bdi dir="ltr" x-text="formatYear(row.year)"></bdi>
                 </td>
@@ -334,10 +326,7 @@
                         @resize.window="close()"
                       >
                         <img :src="portrait(person)" :alt="person[lang]" width="40" height="40" loading="lazy" decoding="async" />
-                    <span class="government-details" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="2" width="8" height="5" rx="1"/><path d="M12 7v4M4 15v-4h16v4"/><rect x="1" y="15" width="6" height="5" rx="1"/><rect x="17" y="15" width="6" height="5" rx="1"/></svg>
-                      <span class="government-details-arrow" aria-hidden="true">↗</span>
-                    </span>
+                        <span class="government-details-arrow" aria-hidden="true">↗</span>
                         <span x-ref="tooltip" popover="manual" class="portrait-tooltip" role="tooltip" :dir="lang==='fa'?'rtl':'ltr'" x-text="person[lang]"></span>
                       </button>
                     </template>
@@ -369,13 +358,13 @@
                 </td>
                 <td
                   dir="ltr"
-                  class="hidden px-0.5 py-1.5 text-center font-medium tabular-nums sm:table-cell sm:text-xs"
+                  class="hidden px-0.5 py-1.5 text-center font-medium tabular-nums lg:table-cell sm:text-xs"
                 >
                   <bdi dir="ltr" x-text="conversion(row, 'minimum')"></bdi>
                 </td>
                 <td
                   dir="ltr"
-                  class="hidden px-0.5 py-1.5 text-center font-medium tabular-nums sm:table-cell sm:text-xs"
+                  class="hidden px-0.5 py-1.5 text-center font-medium tabular-nums lg:table-cell sm:text-xs"
                 >
                   <bdi dir="ltr" x-text="conversion(row, 'maximum')"></bdi>
                 </td></tr
@@ -490,14 +479,32 @@
           </details>
         </div>
       </dialog>
+      <dialog id="aboutDialog" x-ref="aboutDialog" class="modal-dialog w-[calc(100%-24px)] max-w-lg rounded-2xl border border-line bg-surface text-ink shadow-xl" aria-labelledby="about-title" @click.self="$refs.aboutDialog.close()">
+        <div class="p-4 sm:p-6" :dir="lang==='fa'?'rtl':'ltr'">
+          <header class="flex items-center justify-between gap-4">
+            <h2 id="about-title" class="text-lg font-semibold" x-text="t.whySite"></h2>
+            <button type="button" class="icon-button" @click="$refs.aboutDialog.close()" :aria-label="t.close" autofocus>✕</button>
+          </header>
+          <p class="mt-4 text-sm leading-7 text-muted" x-text="t.introduction"></p>
+          <h3 class="mt-5 text-sm font-semibold" x-text="t.siteFeatures"></h3>
+          <ul class="mt-3 list-disc space-y-2 ps-5 text-xs leading-6 text-muted">
+            <template x-for="key in ['featurePrices', 'featureWages', 'featureConversion', 'featureSorting', 'featureGovernment']" :key="key">
+              <li x-text="t[key]"></li>
+            </template>
+          </ul>
+        </div>
+      </dialog>
       <footer class="mt-4 flex shrink-0 items-center justify-between gap-3 border-t border-line pt-3 text-[10px] text-muted" dir="ltr">
-        <p class="flex min-w-0 flex-wrap items-center gap-1" :dir="lang==='fa'?'rtl':'ltr'">
+        <p class="hidden min-w-0 flex-wrap items-center gap-1 sm:flex" :dir="lang==='fa'?'rtl':'ltr'">
           <span class="text-[11px] leading-none" aria-hidden="true">❤️</span>
           <span x-text="t.createdWith">ساخته شده با علاقه و درد توسط</span>
           <a class="source-link" href="https://github.com/ohmydevops/USDTOMAN" target="_blank" rel="noopener">ohmydevops</a>
           <span x-text="t.createdWhen">در یک بعدازظهر مهر ۱۴۰۵</span>
         </p>
-        <button type="button" class="source-link shrink-0 py-1" @click="$refs.creditsDialog.showModal()" aria-haspopup="dialog" x-text="t.sourcesUsed">منابع استفاده شده</button>
+        <nav class="ml-auto flex shrink-0 flex-wrap justify-end gap-x-3 gap-y-1" :dir="lang==='fa'?'rtl':'ltr'">
+          <button type="button" class="source-link py-1" @click="showAbout()" aria-haspopup="dialog" aria-controls="aboutDialog" x-text="t.whySite">چرا این سایت؟</button>
+          <button type="button" class="source-link py-1" @click="$refs.creditsDialog.showModal()" aria-haspopup="dialog" x-text="t.sourcesUsed">منابع استفاده شده</button>
+        </nav>
       </footer>
     </main>
   </body>

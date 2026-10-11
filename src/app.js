@@ -36,6 +36,13 @@ const translations = {
     priceSources: "منابع قیمت‌ها",
     governmentSources: "منابع هیئت دولت",
     sourcesUsed: "منابع استفاده شده",
+    whySite: "چرا این سایت؟",
+    siteFeatures: "امکانات سایت",
+    featurePrices: "کمترین و بیشترین قیمت سالانه دلار، طلای ۱۸ عیار و سکه بهار آزادی به تومان",
+    featureWages: "حداقل حقوق ماهانه، تورم سالانه و محاسبه حقوق به دلار",
+    featureConversion: "محاسبه ارزش مبلغ دلخواه دلار، مقدار طلا یا تعداد سکه به تومان در هر سال",
+    featureSorting: "مرتب‌سازی سال‌ها، قیمت‌ها، حقوق و تورم",
+    featureGovernment: "مشاهده مسئولان دولت، وزیر اقتصاد و رئیس بانک مرکزی هر سال، همراه با دوره مسئولیت و منابع",
     imageNote: "پرتره‌ها با هوش مصنوعی و بر اساس عکس‌های ویکی‌مدیا کامانز بازطراحی شده‌اند. منابع عکس‌های اصلی:",
     publicDomain: "مالکیت عمومی",
     unknownAuthor: "پدیدآورنده نامشخص",
@@ -96,6 +103,13 @@ const translations = {
     priceSources: "Price sources",
     governmentSources: "Cabinet sources",
     sourcesUsed: "Sources used",
+    whySite: "Why this site?",
+    siteFeatures: "Site features",
+    featurePrices: "Yearly lowest and highest dollar, 18k gold, and Bahar Azadi coin prices in tomans",
+    featureWages: "Monthly minimum wage, annual inflation, and wage conversion to dollars",
+    featureConversion: "Calculate the value of a chosen dollar amount, gold weight, or number of coins in tomans for each year",
+    featureSorting: "Sort years, prices, wages, and inflation",
+    featureGovernment: "Explore each year's government leaders, economy minister, and Central Bank governor, with terms and sources",
     imageNote: "AI-generated illustrated portraits based on Wikimedia Commons photographs. Original photo sources:",
     publicDomain: "Public domain",
     unknownAuthor: "Unknown author",
@@ -324,6 +338,9 @@ document.addEventListener("alpine:init", () =>
         en,
         fa: this.data?.years.flatMap(row => row.government).find(person => person.en === en)?.fa || en,
       }));
+    },
+    showAbout() {
+      this.$refs.aboutDialog.showModal();
     },
     get dataSources() {
       const links = new Map();
