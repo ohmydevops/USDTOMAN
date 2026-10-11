@@ -133,6 +133,13 @@ td,
     border-color 250ms ease,
     transform 180ms ease;
 }
+.icon-button .theme-icon {
+  display: block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--ink);
+}
 .icon-button:hover {
   transform: translateY(-1px);
 }
