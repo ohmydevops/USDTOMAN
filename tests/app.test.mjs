@@ -192,6 +192,18 @@ test("translations have matching Persian and English text", () => {
   for (const text of Object.values(app.t)) assert.ok(text.length);
 });
 
+test("all series exposes raw ranges, wages, and inflation and falls back on mobile", () => {
+  const { app } = createApp({ language: "en" });
+  app.data = { years: sampleYears() };
+  app.setSeries("all");
+  assert.equal(app.series, "all");
+  assert.equal(app.allValue(app.data.years[1], "goldMinimum"), "90,639");
+  assert.equal(app.allValue(app.data.years[0], "coinMaximum"), "—");
+  assert.equal(app.allValue(app.data.years[1], "inflation"), "15.6%");
+  app.ensureDesktopSeries(400);
+  assert.equal(app.series, "dollar");
+});
+
 test("data sources include coin and supporting references without duplicate URLs", () => {
   const { app } = createApp();
   assert.equal(app.dataSources.length, 0);

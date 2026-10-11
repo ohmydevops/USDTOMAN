@@ -51,6 +51,10 @@ tbody td:nth-child(6) {
   color: var(--maximum);
 }
 /* Wage and inflation are not a price range, so they use the regular text color. */
+.all-data-table tbody td {
+  color: var(--ink);
+  border: 0;
+}
 table[data-series="wage"] tbody td:nth-child(3),
 table[data-series="wage"] tbody td:nth-child(4),
 table[data-series="wage"] thead button.category-minimum,
@@ -176,11 +180,11 @@ th button {
 
 /* Native scrolling, styled to match both palettes. */
 /* Separate the conversion pair from the exchange-rate columns. */
-tbody td:nth-child(5),
+table:not(.all-data-table) tbody td:nth-child(5),
 thead th[colspan="2"] {
   border-left: 1px solid var(--line);
 }
-html[dir="rtl"] tbody td:nth-child(5),
+html[dir="rtl"] table:not(.all-data-table) tbody td:nth-child(5),
 html[dir="rtl"] thead th[colspan="2"] {
   border-left: 0;
   border-right: 1px solid var(--line);

@@ -104,7 +104,9 @@
   <body class="bg-page text-ink antialiased">
     <main
       x-data="dollarTable"
-      class="mx-auto flex h-dvh max-w-[1040px] flex-col overflow-hidden px-3 py-4 sm:px-7 sm:py-6"
+      @resize.window="ensureDesktopSeries(window.innerWidth)"
+      class="mx-auto flex h-dvh flex-col overflow-hidden px-3 py-4 sm:px-7 sm:py-6"
+      :class="series==='all'?'max-w-[1440px]':'max-w-[1040px]'"
     >
       <header class="mb-5 flex shrink-0 items-center justify-between gap-4">
         <h1 class="text-lg font-semibold sm:text-2xl">
@@ -163,7 +165,7 @@
           ><button
             type="button"
             class="series-option rounded-md px-1.5 py-1.5 text-center text-[11px] font-medium leading-4 transition-colors sm:px-3 sm:text-xs"
-            :class="series===option.key?'bg-tint text-accent':'text-muted hover:text-ink'"
+            :class="(series===option.key?'bg-tint text-accent':'text-muted hover:text-ink') + (option.key==='all'?' hidden lg:block':'')"
             :aria-pressed="series===option.key"
             @click="setSeries(option.key)"
             x-text="option.label"
@@ -180,7 +182,28 @@
         tabindex="0"
         :aria-label="lang==='fa'?'جدول قیمت سالانه دلار':'Yearly dollar prices table'"
       >
+        <table x-show="series==='all'" class="all-data-table hidden w-full table-fixed border-collapse text-xs lg:table">
+          <thead class="sticky top-0 z-10 bg-tint text-muted">
+            <tr>
+              <th class="w-[64px] px-2 py-3"><button type="button" class="w-full text-center" @click="sortBy('year')" x-text="t.year + (ascending?' ↑':' ↓')"></button></th>
+              <th class="w-[64px] px-2 py-3 text-center" x-text="t.government"></th>
+              <template x-for="column in allColumns" :key="column.key">
+                <th class="px-2 py-3 text-center font-medium"><span x-text="column.label"></span><small class="block text-[9px] font-normal" x-show="column.key!=='inflation'" x-text="'('+t.unit+')'"></small></th>
+              </template>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-line">
+            <template x-for="row in sortedRows" :key="row.year">
+              <tr class="hover:bg-tint">
+                <td class="px-2 py-3 text-center tabular-nums" x-text="formatYear(row.year)"></td>
+                <td class="px-2 py-2 text-center"><button type="button" class="portrait-person government-trigger" @click="showGovernment(row)" aria-haspopup="dialog" :aria-label="t.governmentTree+' '+formatYear(row.year)"><img :src="portrait(primaryPerson(row))" :alt="primaryPerson(row)[lang]" width="36" height="36" loading="lazy" /><span class="government-details-arrow" aria-hidden="true">↗</span></button></td>
+                <template x-for="column in allColumns" :key="column.key"><td class="px-1 py-3 text-center tabular-nums"><bdi dir="ltr" x-text="allValue(row, column.key)"></bdi></td></template>
+              </tr>
+            </template>
+          </tbody>
+        </table>
         <table
+          x-show="series!=='all'"
           class="w-full table-fixed border-collapse text-start text-xs sm:text-sm"
           :data-series="series"
         >

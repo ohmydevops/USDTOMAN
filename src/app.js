@@ -37,6 +37,7 @@ const translations = {
     governmentSources: "منابع هیئت دولت",
     sourcesUsed: "منابع استفاده شده",
     whySite: "چرا این سایت؟",
+    all: "همه",
     siteFeatures: "امکانات سایت",
     featurePrices: "کمترین و بیشترین قیمت سالانه دلار، طلای ۱۸ عیار و سکه بهار آزادی به تومان",
     featureWages: "حداقل حقوق ماهانه، تورم سالانه و محاسبه حقوق به دلار",
@@ -104,6 +105,7 @@ const translations = {
     governmentSources: "Cabinet sources",
     sourcesUsed: "Sources used",
     whySite: "Why this site?",
+    all: "All",
     siteFeatures: "Site features",
     featurePrices: "Yearly lowest and highest dollar, 18k gold, and Bahar Azadi coin prices in tomans",
     featureWages: "Monthly minimum wage, annual inflation, and wage conversion to dollars",
@@ -161,7 +163,7 @@ const sortParameters = new URLSearchParams(window.location.search);
 const sortableColumns = ["year", "minimum", "maximum"];
 const initialSort = sortParameters.get("sort");
 // The two value columns show a range for prices, or wage and inflation.
-const seriesKeys = ["dollar", "gold", "coin", "wage"];
+const seriesKeys = ["dollar", "gold", "coin", "wage", "all"];
 const priceRanges = { gold: "goldGram", coin: "coin" };
 const initialSeries = sortParameters.get("series");
 
@@ -192,6 +194,7 @@ document.addEventListener("alpine:init", () =>
       return this.lang === "fa" ? "fa-IR" : "en-US";
     },
     async init() {
+      this.ensureDesktopSeries(window.innerWidth);
       this.syncPage();
       if (sortParameters.get("credits") === "1") this.$nextTick(() => this.$refs.creditsDialog.showModal());
       await this.refreshData();
@@ -260,7 +263,29 @@ document.addEventListener("alpine:init", () =>
     setSeries(key) {
       if (!seriesKeys.includes(key)) return;
       this.series = key;
+      if (key === "all") this.sortKey = "year";
       this.syncUrl();
+    },
+    ensureDesktopSeries(width) {
+      if (width < 1024 && this.series === "all") this.setSeries("dollar");
+    },
+    get allColumns() {
+      return [
+        { key: "minimum", label: this.t.dollar + " · " + this.t.minimum },
+        { key: "maximum", label: this.t.dollar + " · " + this.t.maximum },
+        { key: "goldMinimum", label: this.t.goldGram + " · " + this.t.minimum },
+        { key: "goldMaximum", label: this.t.goldGram + " · " + this.t.maximum },
+        { key: "coinMinimum", label: this.t.coin + " · " + this.t.minimum },
+        { key: "coinMaximum", label: this.t.coin + " · " + this.t.maximum },
+        { key: "minimumWage", label: this.t.minimumWage },
+        { key: "inflation", label: this.t.inflation },
+      ];
+    },
+    allValue(row, key) {
+      const value = { goldMinimum: row.goldGram?.minimum, goldMaximum: row.goldGram?.maximum,
+        coinMinimum: row.coin?.minimum, coinMaximum: row.coin?.maximum }[key] ?? row[key] ?? null;
+      if (key === "inflation") return value === null ? "—" : numberFormatter(this.locale, { style: "percent", maximumFractionDigits: 1 }).format(value / 100);
+      return this.formatPrice(value);
     },
     syncUrl() {
       const url = new URL(window.location.href);
@@ -276,6 +301,7 @@ document.addEventListener("alpine:init", () =>
         { key: "gold", label: this.t.goldGram },
         { key: "coin", label: this.t.coin },
         { key: "wage", label: this.t.wage },
+        { key: "all", label: this.t.all },
       ];
     },
     get seriesNote() {
