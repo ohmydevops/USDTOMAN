@@ -55,6 +55,10 @@ tbody td:nth-child(6) {
   color: var(--ink);
   border: 0;
 }
+.all-data-table th.section-end,
+.all-data-table td.section-end {
+  border-inline-end: 1px solid var(--line);
+}
 table[data-series="wage"] tbody td:nth-child(3),
 table[data-series="wage"] tbody td:nth-child(4),
 table[data-series="wage"] thead button.category-minimum,

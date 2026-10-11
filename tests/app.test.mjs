@@ -11,6 +11,7 @@ function createApp(saved = {}, intl = Intl) {
   const governmentData = JSON.parse(fs.readFileSync("src/government.json", "utf8"));
   const leadership = JSON.parse(fs.readFileSync("src/leadership.json", "utf8"));
   const root = { dataset: {} };
+  let historyUrl;
   const source = fs.readFileSync("src/app.js", "utf8").replace(/^import .*;\r?\n/gm, "");
   vm.runInNewContext(source, {
     Intl: intl,
@@ -20,15 +21,25 @@ function createApp(saved = {}, intl = Intl) {
     primaryGovernmentPerson,
     leadership,
     localStorage: { getItem: (key) => saved[key], setItem: (key, value) => (saved[key] = value) },
-    window: { location: { search: "", href: "https://example.test/" }, history: { replaceState: () => {} } },
+    window: { location: { search: "", href: "https://example.test/" }, history: { replaceState: (_, __, url) => { historyUrl = url.toString(); } } },
     URL,
     URLSearchParams,
     document: { documentElement: root, addEventListener: (_, callback) => callback() },
     Alpine: { data: (_, callback) => (factory = callback) },
     navigator: {},
   });
-  return { app: factory(), root };
+  return { app: factory(), root, historyUrl: () => historyUrl };
 }
+
+test("URL synchronization includes the dollar series explicitly", () => {
+  const { app, historyUrl } = createApp();
+  app.setSeries("gold");
+  app.setSeries("dollar");
+  const url = new URL(historyUrl());
+  assert.equal(url.searchParams.get("series"), "dollar");
+  assert.equal(url.searchParams.get("sort"), "year");
+  assert.equal(url.searchParams.get("order"), "desc");
+});
 
 test("multipliers use Persian digits, parentheses, and highest / lowest", () => {
   const { app } = createApp();

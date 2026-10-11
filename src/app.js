@@ -271,12 +271,12 @@ document.addEventListener("alpine:init", () =>
     },
     get allColumns() {
       return [
-        { key: "minimum", label: this.t.dollar + " · " + this.t.minimum },
-        { key: "maximum", label: this.t.dollar + " · " + this.t.maximum },
-        { key: "goldMinimum", label: this.t.goldGram + " · " + this.t.minimum },
-        { key: "goldMaximum", label: this.t.goldGram + " · " + this.t.maximum },
-        { key: "coinMinimum", label: this.t.coin + " · " + this.t.minimum },
-        { key: "coinMaximum", label: this.t.coin + " · " + this.t.maximum },
+        { key: "minimum", label: this.t.dollar, range: this.t.minimum },
+        { key: "maximum", label: this.t.dollar, range: this.t.maximum },
+        { key: "goldMinimum", label: this.t.goldGram, range: this.t.minimum },
+        { key: "goldMaximum", label: this.t.goldGram, range: this.t.maximum },
+        { key: "coinMinimum", label: this.t.coin, range: this.t.minimum },
+        { key: "coinMaximum", label: this.t.coin, range: this.t.maximum },
         { key: "minimumWage", label: this.t.minimumWage },
         { key: "inflation", label: this.t.inflation },
       ];
@@ -291,8 +291,7 @@ document.addEventListener("alpine:init", () =>
       const url = new URL(window.location.href);
       url.searchParams.set("sort", this.sortKey);
       url.searchParams.set("order", this.ascending ? "asc" : "desc");
-      if (this.series === "dollar") url.searchParams.delete("series");
-      else url.searchParams.set("series", this.series);
+      url.searchParams.set("series", this.series);
       window.history.replaceState(null, "", url);
     },
     get seriesOptions() {
