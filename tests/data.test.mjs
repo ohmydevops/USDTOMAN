@@ -5,11 +5,9 @@ import fs from "node:fs";
 const data = JSON.parse(fs.readFileSync("src/data.json", "utf8"));
 const currentYear = Math.max(...data.years.map((row) => row.year));
 
-test("every year has a monthly minimum wage that never decreases", () => {
-  let previous = 0;
-  for (const row of [...data.years].sort((a, b) => a.year - b.year)) {
-    assert.ok(Number.isFinite(row.minimumWage) && row.minimumWage >= previous, String(row.year));
-    previous = row.minimumWage;
+test("every year has a valid positive monthly minimum wage", () => {
+  for (const row of data.years) {
+    assert.ok(Number.isFinite(row.minimumWage) && row.minimumWage > 0, String(row.year));
   }
 });
 

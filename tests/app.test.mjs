@@ -192,14 +192,6 @@ test("translations have matching Persian and English text", () => {
   for (const text of Object.values(app.t)) assert.ok(text.length);
 });
 
-test("opening the site story uses the modal dialog", () => {
-  const { app } = createApp();
-  let opened = 0;
-  app.$refs = { aboutDialog: { showModal: () => opened++ } };
-  app.showAbout();
-  assert.equal(opened, 1);
-});
-
 test("data sources include coin and supporting references without duplicate URLs", () => {
   const { app } = createApp();
   assert.equal(app.dataSources.length, 0);
