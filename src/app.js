@@ -48,6 +48,21 @@ const translations = {
     termsAndSources: "دوره مسئولیت و منابع",
     otherLeaders: "دیگر مسئولان این سال",
     personHint: "برای دیدن جزئیات، روی نام هر فرد بزنید.",
+    series: "نمایش داده",
+    dollar: "دلار",
+    goldGram: "طلای ۱۸ عیار",
+    coin: "سکه بهار آزادی",
+    wage: "حقوق و تورم",
+    minimumWage: "حداقل حقوق ماهانه",
+    inflation: "تورم سالانه",
+    wageInDollars: "حقوق به دلار",
+    gramUnit: "گرم",
+    coinUnit: "سکه",
+    goldAmount: "مقدار طلا به گرم",
+    coinAmount: "تعداد سکه",
+    goldNote: "طلای ۱۸ عیار هر گرم؛ کمترین و بیشترین قیمت روزانه TGJU از ۱۳۹۳. برای سال‌های قبل داده یکدست و معتبری پیدا نشد.",
+    coinNote: "سکه تمام بهار آزادی (طرح قدیم)؛ کمترین و بیشترین قیمت روزانه TGJU از ۱۳۹۳. برای سال‌های قبل داده یکدست و معتبری پیدا نشد.",
+    wageNote: "حداقل حقوق پایه ماهانه مصوب شورای عالی کار. تورم سالانه (میانگین ۱۲ ماهه): بانک مرکزی تا ۱۴۰۱ و مرکز آمار از ۱۴۰۲؛ تورم سال جاری پس از پایان سال اعلام می‌شود. حقوق به دلار با بیشترین و کمترین قیمت دلار همان سال حساب شده است.",
   },
   en: {
     title: "Yearly dollar prices in Iran",
@@ -93,6 +108,21 @@ const translations = {
     termsAndSources: "Terms and sources",
     otherLeaders: "Other leaders this year",
     personHint: "Select a name to view their details.",
+    series: "Data shown",
+    dollar: "Dollar",
+    goldGram: "18k gold",
+    coin: "Bahar Azadi coin",
+    wage: "Wage & inflation",
+    minimumWage: "Monthly minimum wage",
+    inflation: "Annual inflation",
+    wageInDollars: "Wage in dollars",
+    gramUnit: "g",
+    coinUnit: "coins",
+    goldAmount: "Gold amount in grams",
+    coinAmount: "Number of coins",
+    goldNote: "18-karat gold per gram; TGJU daily lows and highs from 1393. No consistent, reliable data was found for earlier years.",
+    coinNote: "Full Bahar Azadi coin (old design); TGJU daily lows and highs from 1393. No consistent, reliable data was found for earlier years.",
+    wageNote: "Monthly base minimum wage set by the Supreme Labour Council. Annual inflation (12-month average): Central Bank through 1401, Statistical Centre from 1402; the current year's rate is published after the year ends. Wage in dollars uses that year's highest and lowest dollar prices.",
   },
 };
 const numberFormatters = new Map();
@@ -116,6 +146,10 @@ const remember = (key, value) => {
 const sortParameters = new URLSearchParams(window.location.search);
 const sortableColumns = ["year", "minimum", "maximum"];
 const initialSort = sortParameters.get("sort");
+// The two value columns show a range for prices, or wage and inflation.
+const seriesKeys = ["dollar", "gold", "coin", "wage"];
+const priceRanges = { gold: "goldGram", coin: "coin" };
+const initialSeries = sortParameters.get("series");
 
 document.addEventListener("alpine:init", () =>
   Alpine.data("dollarTable", () => ({
@@ -124,7 +158,8 @@ document.addEventListener("alpine:init", () =>
     data: null,
     loading: true,
     error: false,
-    dollarAmount: 100,
+    series: seriesKeys.includes(initialSeries) ? initialSeries : "dollar",
+    amounts: { dollar: 100, gold: 10, coin: 1, wage: 100 },
     governmentYear: null,
     selectedGovernmentPerson: null,
     currentDate: new Date(),
@@ -206,10 +241,73 @@ document.addEventListener("alpine:init", () =>
         this.sortKey = key;
         this.ascending = false;
       }
+      this.syncUrl();
+    },
+    setSeries(key) {
+      if (!seriesKeys.includes(key)) return;
+      this.series = key;
+      this.syncUrl();
+    },
+    syncUrl() {
       const url = new URL(window.location.href);
       url.searchParams.set("sort", this.sortKey);
       url.searchParams.set("order", this.ascending ? "asc" : "desc");
+      if (this.series === "dollar") url.searchParams.delete("series");
+      else url.searchParams.set("series", this.series);
       window.history.replaceState(null, "", url);
+    },
+    get seriesOptions() {
+      return [
+        { key: "dollar", label: this.t.dollar },
+        { key: "gold", label: this.t.goldGram },
+        { key: "coin", label: this.t.coin },
+        { key: "wage", label: this.t.wage },
+      ];
+    },
+    get seriesNote() {
+      return { gold: this.t.goldNote, coin: this.t.coinNote, wage: this.t.wageNote }[this.series] || "";
+    },
+    columnLabel(key) {
+      if (this.series === "wage" && key === "minimum") return this.t.minimumWage;
+      if (this.series === "wage" && key === "maximum") return this.t.inflation;
+      return this.t[key];
+    },
+    columnHasUnit(key) {
+      return (key === "minimum" || key === "maximum") && !(this.series === "wage" && key === "maximum");
+    },
+    get amountUnit() {
+      return { dollar: "$", gold: this.t.gramUnit, coin: this.t.coinUnit }[this.series] || "$";
+    },
+    get amountLabel() {
+      return { gold: this.t.goldAmount, coin: this.t.coinAmount }[this.series] || this.t.amount;
+    },
+    get dollarAmount() {
+      return this.amounts[this.series];
+    },
+    set dollarAmount(value) {
+      this.amounts[this.series] = value;
+    },
+    // Value in the minimum or maximum column for the selected series.
+    cell(row, key) {
+      if (key === "year") return row.year;
+      if (this.series === "wage") return key === "minimum" ? row.minimumWage : row.inflation;
+      const range = priceRanges[this.series] ? row[priceRanges[this.series]] : row;
+      return range?.[key] ?? null;
+    },
+    formatCell(row, key) {
+      const value = this.cell(row, key);
+      if (this.series === "wage" && key === "maximum")
+        return value === null
+          ? "—"
+          : numberFormatter(this.locale, { style: "percent", maximumFractionDigits: 1 }).format(value / 100);
+      return this.formatPrice(value);
+    },
+    // Desktop conversion columns: amount × price, or the wage in dollars at the year's rates.
+    conversion(row, key) {
+      if (this.series !== "wage") return this.tomanValue(this.cell(row, key));
+      const dollar = key === "minimum" ? row.maximum : row.minimum;
+      if (!row.minimumWage || !dollar || dollar <= 0) return "—";
+      return numberFormatter(this.locale, { maximumFractionDigits: 0 }).format(row.minimumWage / dollar);
     },
     portrait(person) {
       return portraits[person.en]?.src;
@@ -310,9 +408,11 @@ document.addEventListener("alpine:init", () =>
                   this.locale,
                 ) || b.year - a.year
           );
-        if (a[key] === null && b[key] !== null) return 1;
-        if (b[key] === null && a[key] !== null) return -1;
-        return direction * ((a[key] ?? 0) - (b[key] ?? 0)) || b.year - a.year;
+        const first = this.cell(a, key),
+          second = this.cell(b, key);
+        if (first === null && second !== null) return 1;
+        if (second === null && first !== null) return -1;
+        return direction * ((first ?? 0) - (second ?? 0)) || b.year - a.year;
       });
     },
     formatYear(value) {
@@ -347,18 +447,21 @@ document.addEventListener("alpine:init", () =>
           }).format(value);
     },
     priceMultiplier(row) {
+      const minimum = this.cell(row, "minimum"),
+        maximum = this.cell(row, "maximum");
       if (
-        !Number.isFinite(row.minimum) ||
-        !Number.isFinite(row.maximum) ||
-        row.minimum <= 0 ||
-        row.maximum < row.minimum
+        this.series === "wage" ||
+        !Number.isFinite(minimum) ||
+        !Number.isFinite(maximum) ||
+        minimum <= 0 ||
+        maximum < minimum
       )
         return "—";
       return (
         "(" + numberFormatter(this.locale, {
           useGrouping: false,
           maximumFractionDigits: 2,
-        }).format(row.maximum / row.minimum) + "×)"
+        }).format(maximum / minimum) + "×)"
       );
     },
     daysAgo(value, now = this.currentDate) {

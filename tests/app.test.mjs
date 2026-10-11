@@ -20,7 +20,8 @@ function createApp(saved = {}, intl = Intl) {
     primaryGovernmentPerson,
     leadership,
     localStorage: { getItem: (key) => saved[key], setItem: (key, value) => (saved[key] = value) },
-    window: { location: { search: "" } },
+    window: { location: { search: "", href: "https://example.test/" }, history: { replaceState: () => {} } },
+    URL,
     URLSearchParams,
     document: { documentElement: root, addEventListener: (_, callback) => callback() },
     Alpine: { data: (_, callback) => (factory = callback) },
@@ -66,6 +67,59 @@ test("dollar input has a minimum of one with English and Persian digits", () => 
   assert.equal(app.dollarAmount, 1);
   app.updateAmount("۲۵");
   assert.equal(app.dollarAmount, 25);
+});
+
+const sampleYears = () => [
+  { year: 1392, minimum: 2889, maximum: 3690, goldGram: null, coin: null, minimumWage: 487125, inflation: 34.7 },
+  { year: 1393, minimum: 3026, maximum: 3574, goldGram: { minimum: 90639, maximum: 106668 }, coin: { minimum: 895000, maximum: 1043000 }, minimumWage: 608910, inflation: 15.6 },
+  { year: 1405, minimum: 146980, maximum: 272020, goldGram: { minimum: 15512000, maximum: 26842200 }, coin: { minimum: 153130000, maximum: 264300000 }, minimumWage: 16625550, inflation: null },
+];
+
+test("switching series shows gold, coin, or wage values and sorts missing years last", () => {
+  const { app } = createApp({ language: "en" });
+  app.data = { years: sampleYears() };
+  app.setSeries("gold");
+  assert.equal(app.cell(app.data.years[1], "maximum"), 106668);
+  assert.equal(app.formatCell(app.data.years[0], "minimum"), "—");
+  app.sortBy("minimum");
+  assert.deepEqual(Array.from(app.sortedRows, (row) => row.year), [1405, 1393, 1392]);
+  app.sortBy("minimum");
+  assert.deepEqual(Array.from(app.sortedRows, (row) => row.year), [1393, 1405, 1392]);
+  app.setSeries("coin");
+  assert.equal(app.priceMultiplier(app.data.years[1]), "(1.17×)");
+  app.setSeries("wage");
+  assert.equal(app.cell(app.data.years[2], "minimum"), 16625550);
+  assert.equal(app.priceMultiplier(app.data.years[2]), "—");
+  app.setSeries("unknown");
+  assert.equal(app.series, "wage");
+});
+
+test("inflation uses localized percentages and wages convert to dollars at the year's rates", () => {
+  const { app } = createApp();
+  app.data = { years: sampleYears() };
+  app.setSeries("wage");
+  assert.equal(app.formatCell(app.data.years[0], "maximum"), "۳۴٫۷٪");
+  assert.equal(app.formatCell(app.data.years[2], "maximum"), "—");
+  app.toggleLanguage();
+  assert.equal(app.formatCell(app.data.years[1], "maximum"), "15.6%");
+  assert.equal(app.formatCell(app.data.years[1], "minimum"), "608,910");
+  // The lower dollar value uses the year's highest dollar price.
+  assert.equal(app.conversion(app.data.years[2], "minimum"), "61");
+  assert.equal(app.conversion(app.data.years[2], "maximum"), "113");
+});
+
+test("each series keeps its own conversion amount", () => {
+  const { app } = createApp({ language: "en" });
+  app.data = { years: sampleYears() };
+  app.setSeries("coin");
+  assert.equal(app.dollarAmount, 1);
+  assert.equal(app.conversion(app.data.years[1], "maximum"), "1,043,000");
+  app.updateAmount("3");
+  app.setSeries("dollar");
+  assert.equal(app.dollarAmount, 100);
+  assert.equal(app.conversion(app.data.years[1], "minimum"), "302,600");
+  app.setSeries("coin");
+  assert.equal(app.dollarAmount, 3);
 });
 
 test("formatting repeated prices reuses formatters while supporting language changes", () => {

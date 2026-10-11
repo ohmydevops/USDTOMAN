@@ -4,7 +4,7 @@
   "calendar": "persian",
   "retrievedAt": "2026-10-10",
   "latestDate": "2026-10-08",
-  "method": "TGJU daily OHLC extrema for full covered years; NetArz published annual ranges for earlier years. Monthly-average ranges are not daily extremes. Current year is year-to-date. Annual-only extrema are null. Per user preference, annual-only reference rates are repeated in both minimum and maximum columns; these are not independently measured extrema.",
+  "method": "TGJU daily OHLC extrema for full covered years; NetArz published annual ranges for earlier years. Monthly-average ranges are not daily extremes. Current year is year-to-date. Annual-only extrema are null. Per user preference, annual-only reference rates are repeated in both minimum and maximum columns; these are not independently measured extrema. Gold (18-karat gram) and Bahar Azadi coin ranges are TGJU daily OHLC extrema from 1393, the first full year TGJU covers; earlier years are null because no consistent source was found. Minimum wage is the monthly base wage (30 × the daily rate set by the Supreme Labour Council), in toman. Inflation is the annual 12-month-average consumer price inflation; the current year is null until it ends.",
   "years": [
     {
       "year": 1357,
@@ -19,7 +19,12 @@
           "fa": "مهدی بازرگان (دولت موقت)",
           "en": "Mehdi Bazargan (interim)"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 630,
+      "inflation": 10,
+      "inflationSource": "cbi"
     },
     {
       "year": 1358,
@@ -38,7 +43,12 @@
           "fa": "ابوالحسن بنی‌صدر",
           "en": "Abolhassan Banisadr"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 1701,
+      "inflation": 11.4,
+      "inflationSource": "cbi"
     },
     {
       "year": 1359,
@@ -53,7 +63,12 @@
           "fa": "ابوالحسن بنی‌صدر",
           "en": "Abolhassan Banisadr"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 1905,
+      "inflation": 23.5,
+      "inflationSource": "cbi"
     },
     {
       "year": 1360,
@@ -76,7 +91,12 @@
           "fa": "علی خامنه‌ای",
           "en": "Ali Khamenei"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 1905,
+      "inflation": 22.8,
+      "inflationSource": "cbi"
     },
     {
       "year": 1361,
@@ -91,7 +111,12 @@
           "fa": "علی خامنه‌ای",
           "en": "Ali Khamenei"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 1905,
+      "inflation": 19.2,
+      "inflationSource": "cbi"
     },
     {
       "year": 1362,
@@ -106,7 +131,12 @@
           "fa": "علی خامنه‌ای",
           "en": "Ali Khamenei"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 1905,
+      "inflation": 14.8,
+      "inflationSource": "cbi"
     },
     {
       "year": 1363,
@@ -121,7 +151,12 @@
           "fa": "علی خامنه‌ای",
           "en": "Ali Khamenei"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 1905,
+      "inflation": 10.4,
+      "inflationSource": "cbi"
     },
     {
       "year": 1364,
@@ -134,7 +169,12 @@
           "fa": "علی خامنه‌ای",
           "en": "Ali Khamenei"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 2160,
+      "inflation": 6.9,
+      "inflationSource": "cbi"
     },
     {
       "year": 1365,
@@ -147,7 +187,12 @@
           "fa": "علی خامنه‌ای",
           "en": "Ali Khamenei"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 2160,
+      "inflation": 23.7,
+      "inflationSource": "cbi"
     },
     {
       "year": 1366,
@@ -160,7 +205,12 @@
           "fa": "علی خامنه‌ای",
           "en": "Ali Khamenei"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 2280,
+      "inflation": 27.7,
+      "inflationSource": "cbi"
     },
     {
       "year": 1367,
@@ -173,7 +223,12 @@
           "fa": "علی خامنه‌ای",
           "en": "Ali Khamenei"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 2490,
+      "inflation": 28.9,
+      "inflationSource": "cbi"
     },
     {
       "year": 1368,
@@ -190,7 +245,12 @@
           "fa": "اکبر هاشمی رفسنجانی",
           "en": "Akbar Hashemi Rafsanjani"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 2490,
+      "inflation": 17.4,
+      "inflationSource": "cbi"
     },
     {
       "year": 1369,
@@ -203,7 +263,12 @@
           "fa": "اکبر هاشمی رفسنجانی",
           "en": "Akbar Hashemi Rafsanjani"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 3000,
+      "inflation": 9,
+      "inflationSource": "cbi"
     },
     {
       "year": 1370,
@@ -216,7 +281,12 @@
           "fa": "اکبر هاشمی رفسنجانی",
           "en": "Akbar Hashemi Rafsanjani"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 5031,
+      "inflation": 20.7,
+      "inflationSource": "cbi"
     },
     {
       "year": 1371,
@@ -229,7 +299,12 @@
           "fa": "اکبر هاشمی رفسنجانی",
           "en": "Akbar Hashemi Rafsanjani"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 6801,
+      "inflation": 24.4,
+      "inflationSource": "cbi"
     },
     {
       "year": 1372,
@@ -242,7 +317,12 @@
           "fa": "اکبر هاشمی رفسنجانی",
           "en": "Akbar Hashemi Rafsanjani"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 8982,
+      "inflation": 22.9,
+      "inflationSource": "cbi"
     },
     {
       "year": 1373,
@@ -255,7 +335,12 @@
           "fa": "اکبر هاشمی رفسنجانی",
           "en": "Akbar Hashemi Rafsanjani"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 11682,
+      "inflation": 35.2,
+      "inflationSource": "cbi"
     },
     {
       "year": 1374,
@@ -268,7 +353,12 @@
           "fa": "اکبر هاشمی رفسنجانی",
           "en": "Akbar Hashemi Rafsanjani"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 15999,
+      "inflation": 49.4,
+      "inflationSource": "cbi"
     },
     {
       "year": 1375,
@@ -281,7 +371,12 @@
           "fa": "اکبر هاشمی رفسنجانی",
           "en": "Akbar Hashemi Rafsanjani"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 20721,
+      "inflation": 23.2,
+      "inflationSource": "cbi"
     },
     {
       "year": 1376,
@@ -298,7 +393,12 @@
           "fa": "محمد خاتمی",
           "en": "Mohammad Khatami"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 25446,
+      "inflation": 17.3,
+      "inflationSource": "cbi"
     },
     {
       "year": 1377,
@@ -311,7 +411,12 @@
           "fa": "محمد خاتمی",
           "en": "Mohammad Khatami"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 30153,
+      "inflation": 18.1,
+      "inflationSource": "cbi"
     },
     {
       "year": 1378,
@@ -324,7 +429,12 @@
           "fa": "محمد خاتمی",
           "en": "Mohammad Khatami"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 36183,
+      "inflation": 20.1,
+      "inflationSource": "cbi"
     },
     {
       "year": 1379,
@@ -337,7 +447,12 @@
           "fa": "محمد خاتمی",
           "en": "Mohammad Khatami"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 45801,
+      "inflation": 12.6,
+      "inflationSource": "cbi"
     },
     {
       "year": 1380,
@@ -350,7 +465,12 @@
           "fa": "محمد خاتمی",
           "en": "Mohammad Khatami"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 56790,
+      "inflation": 11.4,
+      "inflationSource": "cbi"
     },
     {
       "year": 1381,
@@ -363,7 +483,12 @@
           "fa": "محمد خاتمی",
           "en": "Mohammad Khatami"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 69846,
+      "inflation": 15.8,
+      "inflationSource": "cbi"
     },
     {
       "year": 1382,
@@ -376,7 +501,12 @@
           "fa": "محمد خاتمی",
           "en": "Mohammad Khatami"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 85338,
+      "inflation": 15.6,
+      "inflationSource": "cbi"
     },
     {
       "year": 1383,
@@ -389,7 +519,12 @@
           "fa": "محمد خاتمی",
           "en": "Mohammad Khatami"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 106602,
+      "inflation": 15.2,
+      "inflationSource": "cbi"
     },
     {
       "year": 1384,
@@ -406,7 +541,12 @@
           "fa": "محمود احمدی‌نژاد",
           "en": "Mahmoud Ahmadinejad"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 122592,
+      "inflation": 10.4,
+      "inflationSource": "cbi"
     },
     {
       "year": 1385,
@@ -419,7 +559,12 @@
           "fa": "محمود احمدی‌نژاد",
           "en": "Mahmoud Ahmadinejad"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 150000,
+      "inflation": 11.9,
+      "inflationSource": "cbi"
     },
     {
       "year": 1386,
@@ -432,7 +577,12 @@
           "fa": "محمود احمدی‌نژاد",
           "en": "Mahmoud Ahmadinejad"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 183000,
+      "inflation": 18.4,
+      "inflationSource": "cbi"
     },
     {
       "year": 1387,
@@ -445,7 +595,12 @@
           "fa": "محمود احمدی‌نژاد",
           "en": "Mahmoud Ahmadinejad"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 219600,
+      "inflation": 25.4,
+      "inflationSource": "cbi"
     },
     {
       "year": 1388,
@@ -458,7 +613,12 @@
           "fa": "محمود احمدی‌نژاد",
           "en": "Mahmoud Ahmadinejad"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 263520,
+      "inflation": 10.8,
+      "inflationSource": "cbi"
     },
     {
       "year": 1389,
@@ -471,7 +631,12 @@
           "fa": "محمود احمدی‌نژاد",
           "en": "Mahmoud Ahmadinejad"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 303000,
+      "inflation": 12.4,
+      "inflationSource": "cbi"
     },
     {
       "year": 1390,
@@ -484,7 +649,12 @@
           "fa": "محمود احمدی‌نژاد",
           "en": "Mahmoud Ahmadinejad"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 330300,
+      "inflation": 21.5,
+      "inflationSource": "cbi"
     },
     {
       "year": 1391,
@@ -498,7 +668,12 @@
           "fa": "محمود احمدی‌نژاد",
           "en": "Mahmoud Ahmadinejad"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 389700,
+      "inflation": 30.5,
+      "inflationSource": "cbi"
     },
     {
       "year": 1392,
@@ -516,7 +691,12 @@
           "fa": "حسن روحانی",
           "en": "Hassan Rouhani"
         }
-      ]
+      ],
+      "goldGram": null,
+      "coin": null,
+      "minimumWage": 487125,
+      "inflation": 34.7,
+      "inflationSource": "cbi"
     },
     {
       "year": 1393,
@@ -530,7 +710,20 @@
           "fa": "حسن روحانی",
           "en": "Hassan Rouhani"
         }
-      ]
+      ],
+      "goldGram": {
+        "minimum": 90639,
+        "maximum": 106668,
+        "observations": 244
+      },
+      "coin": {
+        "minimum": 895000,
+        "maximum": 1043000,
+        "observations": 255
+      },
+      "minimumWage": 608910,
+      "inflation": 15.6,
+      "inflationSource": "cbi"
     },
     {
       "year": 1394,
@@ -544,7 +737,20 @@
           "fa": "حسن روحانی",
           "en": "Hassan Rouhani"
         }
-      ]
+      ],
+      "goldGram": {
+        "minimum": 87064,
+        "maximum": 104351,
+        "observations": 241
+      },
+      "coin": {
+        "minimum": 854500,
+        "maximum": 1024100,
+        "observations": 239
+      },
+      "minimumWage": 712425,
+      "inflation": 11.9,
+      "inflationSource": "cbi"
     },
     {
       "year": 1395,
@@ -558,7 +764,20 @@
           "fa": "حسن روحانی",
           "en": "Hassan Rouhani"
         }
-      ]
+      ],
+      "goldGram": {
+        "minimum": 100787,
+        "maximum": 116816,
+        "observations": 247
+      },
+      "coin": {
+        "minimum": 990100,
+        "maximum": 1204500,
+        "observations": 233
+      },
+      "minimumWage": 812166,
+      "inflation": 9,
+      "inflationSource": "cbi"
     },
     {
       "year": 1396,
@@ -572,7 +791,20 @@
           "fa": "حسن روحانی",
           "en": "Hassan Rouhani"
         }
-      ]
+      ],
+      "goldGram": {
+        "minimum": 112836,
+        "maximum": 154910,
+        "observations": 246
+      },
+      "coin": {
+        "minimum": 1106000,
+        "maximum": 1620000,
+        "observations": 230
+      },
+      "minimumWage": 929931,
+      "inflation": 9.6,
+      "inflationSource": "cbi"
     },
     {
       "year": 1397,
@@ -586,7 +818,20 @@
           "fa": "حسن روحانی",
           "en": "Hassan Rouhani"
         }
-      ]
+      ],
+      "goldGram": {
+        "minimum": 156226,
+        "maximum": 557770,
+        "observations": 267
+      },
+      "coin": {
+        "minimum": 1603000,
+        "maximum": 5351000,
+        "observations": 265
+      },
+      "minimumWage": 1111269,
+      "inflation": 31.2,
+      "inflationSource": "cbi"
     },
     {
       "year": 1398,
@@ -600,7 +845,20 @@
           "fa": "حسن روحانی",
           "en": "Hassan Rouhani"
         }
-      ]
+      ],
+      "goldGram": {
+        "minimum": 358500,
+        "maximum": 636500,
+        "observations": 241
+      },
+      "coin": {
+        "minimum": 3744000,
+        "maximum": 6100000,
+        "observations": 240
+      },
+      "minimumWage": 1516881,
+      "inflation": 41.2,
+      "inflationSource": "cbi"
     },
     {
       "year": 1399,
@@ -614,7 +872,20 @@
           "fa": "حسن روحانی",
           "en": "Hassan Rouhani"
         }
-      ]
+      ],
+      "goldGram": {
+        "minimum": 588000,
+        "maximum": 1497400,
+        "observations": 284
+      },
+      "coin": {
+        "minimum": 5750000,
+        "maximum": 15500000,
+        "observations": 281
+      },
+      "minimumWage": 1835427,
+      "inflation": 47.1,
+      "inflationSource": "cbi"
     },
     {
       "year": 1400,
@@ -632,7 +903,20 @@
           "fa": "ابراهیم رئیسی",
           "en": "Ebrahim Raisi"
         }
-      ]
+      ],
+      "goldGram": {
+        "minimum": 897400,
+        "maximum": 1324000,
+        "observations": 286
+      },
+      "coin": {
+        "minimum": 8897900,
+        "maximum": 13106000,
+        "observations": 284
+      },
+      "minimumWage": 2655495,
+      "inflation": 46.2,
+      "inflationSource": "cbi"
     },
     {
       "year": 1401,
@@ -646,7 +930,20 @@
           "fa": "ابراهیم رئیسی",
           "en": "Ebrahim Raisi"
         }
-      ]
+      ],
+      "goldGram": {
+        "minimum": 1185000,
+        "maximum": 2827880,
+        "observations": 273
+      },
+      "coin": {
+        "minimum": 11695000,
+        "maximum": 30200000,
+        "observations": 275
+      },
+      "minimumWage": 4179750,
+      "inflation": 46.5,
+      "inflationSource": "cbi"
     },
     {
       "year": 1402,
@@ -660,7 +957,20 @@
           "fa": "ابراهیم رئیسی",
           "en": "Ebrahim Raisi"
         }
-      ]
+      ],
+      "goldGram": {
+        "minimum": 2197600,
+        "maximum": 3255700,
+        "observations": 282
+      },
+      "coin": {
+        "minimum": 23481000,
+        "maximum": 36030000,
+        "observations": 281
+      },
+      "minimumWage": 5308284,
+      "inflation": 40.7,
+      "inflationSource": "sci"
     },
     {
       "year": 1403,
@@ -682,7 +992,20 @@
           "fa": "مسعود پزشکیان",
           "en": "Masoud Pezeshkian"
         }
-      ]
+      ],
+      "goldGram": {
+        "minimum": 3140500,
+        "maximum": 8199200,
+        "observations": 288
+      },
+      "coin": {
+        "minimum": 35990000,
+        "maximum": 90320000,
+        "observations": 288
+      },
+      "minimumWage": 7166184,
+      "inflation": 32.5,
+      "inflationSource": "sci"
     },
     {
       "year": 1404,
@@ -696,7 +1019,20 @@
           "fa": "مسعود پزشکیان",
           "en": "Masoud Pezeshkian"
         }
-      ]
+      ],
+      "goldGram": {
+        "minimum": 6148600,
+        "maximum": 22393700,
+        "observations": 281
+      },
+      "coin": {
+        "minimum": 65580000,
+        "maximum": 218010000,
+        "observations": 289
+      },
+      "minimumWage": 10390968,
+      "inflation": 50.6,
+      "inflationSource": "sci"
     },
     {
       "year": 1405,
@@ -710,7 +1046,20 @@
           "fa": "مسعود پزشکیان",
           "en": "Masoud Pezeshkian"
         }
-      ]
+      ],
+      "goldGram": {
+        "minimum": 15512000,
+        "maximum": 26842200,
+        "observations": 163
+      },
+      "coin": {
+        "minimum": 153130000,
+        "maximum": 264300000,
+        "observations": 163
+      },
+      "minimumWage": 16625550,
+      "inflation": null,
+      "inflationSource": null
     }
   ],
   "sources": {
@@ -734,6 +1083,44 @@
       "coverage": "1357–1363 reference rates only; annual extrema are not reported",
       "originalUnit": "toman",
       "articleDate": "1390/09/24"
+    },
+    "tgjuGold": {
+      "name": "TGJU (gold and coin)",
+      "url": "https://www.tgju.org/profile/geram18/history",
+      "coinUrl": "https://www.tgju.org/profile/sekeb/history",
+      "originalUnit": "rial",
+      "conversion": "Divide by 10 to convert rial to toman",
+      "coverage": "1393 onward; 1392 excluded because TGJU begins partway through the year",
+      "dataUrls": [
+        "https://api.tgju.org/v1/market/indicator/summary-table-data/geram18?lang=fa&order_col=timestamp&order_dir=asc&start=0&length=20000",
+        "https://api.tgju.org/v1/market/indicator/summary-table-data/sekeb?lang=fa&order_col=timestamp&order_dir=asc&start=0&length=20000"
+      ]
+    },
+    "minimumWage": {
+      "name": "Supreme Labour Council minimum wage (Daghigheh compilation)",
+      "url": "https://d-learn.ir/p/iran-minimum-wage-data/",
+      "originalUnit": "toman",
+      "coverage": "1358–1405; 1357 and corrections from published wage circulars",
+      "references": [
+        "https://akhbarekhoob.ir/2760/",
+        "https://www.ekhtebar.ir/%D8%A8%D8%AE%D8%B4%D9%86%D8%A7%D9%85%D9%87-%D8%AF%D8%B3%D8%AA%D9%85%D8%B2%D8%AF-%DB%B9%DB%B7-%D8%A7%D8%A8%D9%84%D8%A7%D8%BA-%D8%B4%D8%AF/",
+        "https://wageindicator.org/work/minimum-wage/updates/2026/minimum-wage-increased-in-iran-from-20-march-2026-march-22-2026/"
+      ]
+    },
+    "cbiInflation": {
+      "name": "Central Bank of Iran inflation (Amarfact compilation)",
+      "url": "https://amarfact.com/note/inflation-statistics/",
+      "coverage": "1357–1401; urban consumer price index, 12-month average"
+    },
+    "sciInflation": {
+      "name": "Statistical Centre of Iran inflation",
+      "url": "https://www.amar.org.ir/",
+      "coverage": "1402–1404; national consumer price index, 12-month average to Esfand",
+      "references": {
+        "1402": "https://aftabnews.ir/fa/news/899592",
+        "1403": "https://marin-consult.com/index.php/tipps-aus-teheran/1547-consumer-price-inflation-at-32-5-in-the-year-1403",
+        "1404": "https://www.citizen.digital/news/iran-inflation-rate-rises-to-506-percent-statistics-centre-n379877"
+      }
     }
   },
   "governmentSource": {

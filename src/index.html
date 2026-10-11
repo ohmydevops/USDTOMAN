@@ -175,12 +175,34 @@
         x-text="data?t.coverage+' '+formatDate(data.latestDate)+' ('+daysAgo(data.latestDate)+')':''"
       ></p>
       <div
+        class="mb-2 grid shrink-0 grid-cols-4 gap-1 rounded-lg border border-line bg-surface p-1 sm:inline-flex sm:self-start"
+        role="group"
+        :aria-label="t.series"
+      >
+        <template x-for="option in seriesOptions" :key="option.key"
+          ><button
+            type="button"
+            class="series-option rounded-md px-1.5 py-1.5 text-center text-[11px] font-medium leading-4 transition-colors sm:px-3 sm:text-xs"
+            :class="series===option.key?'bg-tint text-accent':'text-muted hover:text-ink'"
+            :aria-pressed="series===option.key"
+            @click="setSeries(option.key)"
+            x-text="option.label"
+          ></button
+        ></template>
+      </div>
+      <p
+        class="mb-3 shrink-0 text-[10px] leading-4 text-muted"
+        x-show="seriesNote"
+        x-text="seriesNote"
+      ></p>
+      <div
         class="table-scroll min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain rounded-xl border border-line bg-surface"
         tabindex="0"
         :aria-label="lang==='fa'?'جدول قیمت سالانه دلار':'Yearly dollar prices table'"
       >
         <table
           class="w-full table-fixed border-collapse text-start text-xs sm:text-sm"
+          :data-series="series"
         >
           <thead class="sticky top-0 z-10 bg-tint text-muted">
             <tr>
@@ -202,9 +224,9 @@
                     :class="{'category-minimum': column.key==='minimum', 'category-maximum': column.key==='maximum'}"
                   >
                     <span
-                      ><span x-text="t[column.key]"></span
+                      ><span x-text="columnLabel(column.key)"></span
                       ><small
-                        x-show="column.unit"
+                        x-show="columnHasUnit(column.key)"
                         class="mt-0.5 block text-[9px] font-normal sm:ms-1 sm:inline sm:text-[10px]"
                         x-text="'('+t.unit+')'"
                       ></small></span
@@ -229,7 +251,11 @@
                     x-text="t.minimum"
                     >کمترین</span
                   >
-                  <div class="flex items-center gap-0.5" dir="ltr">
+                  <div
+                    class="flex items-center gap-0.5"
+                    dir="ltr"
+                    x-show="series!=='wage'"
+                  >
                     <input
                       id="dollar-amount"
                       type="text"
@@ -239,11 +265,18 @@
                       :value="formatPrice(dollarAmount)"
                       @input="updateAmount($event.target.value)"
                       @blur="$event.target.value = formatPrice(dollarAmount)"
-                      :aria-label="t.amount"
+                      :aria-label="amountLabel"
                       class="w-[50px] sm:w-[72px] text-center rounded border border-line bg-surface px-1 py-0.5 text-[10px] font-medium text-ink outline-accent sm:text-xs"
                     />
-                    <small class="text-[9px] font-normal">$</small>
+                    <small class="text-[9px] font-normal" x-text="amountUnit"
+                      >$</small
+                    >
                   </div>
+                  <span
+                    class="text-[10px] font-medium text-ink sm:text-xs"
+                    x-show="series==='wage'"
+                    x-text="t.wageInDollars + ' ($)'"
+                  ></span>
                   <span
                     class="category-maximum text-center text-[8px] sm:text-xs"
                     x-text="t.maximum"
@@ -316,14 +349,15 @@
                   dir="ltr"
                   class="px-2 py-1.5 text-center font-medium tabular-nums sm:px-4 sm:py-2"
                 >
-                  <bdi dir="ltr" x-text="formatPrice(row.minimum)"></bdi>
+                  <bdi dir="ltr" x-text="formatCell(row, 'minimum')"></bdi>
                 </td>
                 <td
                   dir="ltr"
                   class="px-2 py-1.5 text-center text-accent font-medium tabular-nums sm:px-4 sm:py-2"
                 >
-                  <bdi dir="ltr" x-text="formatPrice(row.maximum)"></bdi>
+                  <bdi dir="ltr" x-text="formatCell(row, 'maximum')"></bdi>
                   <span
+                    x-show="series!=='wage'"
                     class="ms-1 inline-flex items-baseline whitespace-nowrap text-[10px] sm:text-xs font-normal text-muted"
                     :title="t.multiplier"
                     :aria-label="t.multiplier + ': ' + priceMultiplier(row).replace('×', '↑')"
@@ -337,13 +371,13 @@
                   dir="ltr"
                   class="hidden px-0.5 py-1.5 text-center font-medium tabular-nums sm:table-cell sm:text-xs"
                 >
-                  <bdi dir="ltr" x-text="tomanValue(row.minimum)"></bdi>
+                  <bdi dir="ltr" x-text="conversion(row, 'minimum')"></bdi>
                 </td>
                 <td
                   dir="ltr"
                   class="hidden px-0.5 py-1.5 text-center font-medium tabular-nums sm:table-cell sm:text-xs"
                 >
-                  <bdi dir="ltr" x-text="tomanValue(row.maximum)"></bdi>
+                  <bdi dir="ltr" x-text="conversion(row, 'maximum')"></bdi>
                 </td></tr
             ></template>
           </tbody>

@@ -16,7 +16,8 @@
 
 ## Data
 
-- Prices: use `npm run update-data`, or pass a complete local TGJU snapshot with `npm run update-data -- path/to/snapshot.json`. This updates existing rows from 1391 onward; add new year rows manually and preserve older source distinctions and toman units.
+- Prices: use `npm run update-data`, or pass complete local TGJU snapshots with `npm run update-data -- dollar.json [gold-gram.json] [coin.json]` (missing ones are fetched). This updates existing dollar rows from 1391 and 18k gold gram (`geram18`) and Bahar Azadi coin (`sekeb`) rows from 1393; add new year rows manually and preserve older source distinctions and toman units.
+- Wage and inflation: add `minimumWage` (monthly toman, 30 × the Supreme Labour Council daily rate) and, after a year ends, `inflation` with `inflationSource` (`cbi` or `sci`) manually. Gold before 1393 stays `null` until a consistent source is found.
 - Government: update `src/government.json`, `src/leadership.json`, and affected `government` entries in `src/data.json` together. Verify terms and transitions, retain source links, and keep bilingual names consistent.
 - Keep portraits local in `src/assets/portraits/` with metadata in `src/portraits.json`. Preserve source credits as plain text.
 - Never invent missing facts or prices. Review data diffs and keep the existing snapshot when retrieval fails.

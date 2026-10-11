@@ -50,6 +50,13 @@ tbody td:nth-child(4),
 tbody td:nth-child(6) {
   color: var(--maximum);
 }
+/* Wage and inflation are not a price range, so they use the regular text color. */
+table[data-series="wage"] tbody td:nth-child(3),
+table[data-series="wage"] tbody td:nth-child(4),
+table[data-series="wage"] thead button.category-minimum,
+table[data-series="wage"] thead button.category-maximum {
+  color: var(--ink);
+}
 @media (max-width: 639px) {
   tbody td:nth-child(5),
   tbody td:nth-child(6),
