@@ -31,6 +31,60 @@ function createApp(saved = {}, intl = Intl) {
   return { app: factory(), root, historyUrl: () => historyUrl };
 }
 
+test("lookup input displays grouped digits in the selected language", () => {
+  const { app } = createApp();
+  app.updateExplorerPrice("20000");
+  assert.equal(app.explorerPriceDisplay, "۲۰٬۰۰۰");
+  app.updateExplorerPrice("۱۲۳٬۴۵۶");
+  assert.equal(app.explorerPriceDisplay, "۱۲۳٬۴۵۶");
+  app.toggleLanguage();
+  assert.equal(app.explorerPriceDisplay, "123,456");
+  app.updateExplorerPrice("");
+  assert.equal(app.explorerPriceDisplay, "");
+});
+
+test("price lookup opens with dollar regardless of the active table tab", () => {
+  const { app } = createApp();
+  app.data = { years: sampleYears() };
+  app.series = "coin";
+  app.explorerSeries = "gold";
+  let opened = false;
+  app.$refs = { explorerDialog: { showModal: () => { opened = true; } } };
+  app.showExplorer();
+  assert.equal(app.explorerSeries, "dollar");
+  assert.equal(opened, true);
+});
+
+test("price lookup matches inclusive ranges with Persian digits and skips missing data", () => {
+  const { app } = createApp();
+  app.data = { years: sampleYears() };
+  app.explorerSeries = "dollar";
+  app.explorerPrice = "۳٬۰۲۶";
+  assert.deepEqual(Array.from(app.explorerMatches, row => row.year), [1393, 1392]);
+  app.explorerSeries = "coin";
+  app.explorerPrice = "895000";
+  assert.deepEqual(Array.from(app.explorerMatches, row => row.year), [1393]);
+  app.explorerPrice = "invalid";
+  assert.equal(app.explorerMatches.length, 0);
+  app.explorerPrice = "0";
+  assert.equal(app.explorerMatches.length, 0);
+});
+
+test("year explorer updates ranges independently and handles missing history", () => {
+  const { app } = createApp();
+  app.data = { years: sampleYears() };
+  app.explorerYear = 1393;
+  app.explorerSeries = "coin";
+  assert.equal(app.explorerRange.maximum, 1043000);
+  app.explorerSeries = "gold";
+  assert.equal(app.explorerRange.minimum, 90639);
+  app.explorerYear = "1392";
+  assert.equal(app.explorerRange, null);
+  app.explorerSeries = "dollar";
+  assert.equal(app.explorerRange.minimum, 2889);
+  assert.equal(app.series, "dollar");
+});
+
 test("mobile feature notice appears only on mobile until acknowledged", () => {
   const saved = {};
   const { app } = createApp(saved);

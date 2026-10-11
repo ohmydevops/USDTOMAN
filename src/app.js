@@ -38,6 +38,19 @@ const translations = {
     sourcesUsed: "منابع استفاده شده",
     whySite: "چرا این سایت؟",
     all: "همه",
+    explorer: "کاوش قیمت‌ها",
+    lookupPrice: "قیمت به تومان",
+    lookupDollar: "هر ۱ دلار",
+    lookupGold: "هر ۱ گرم طلای ۱۸ عیار",
+    lookupCoin: "هر ۱ سکه بهار آزادی",
+    lookupHint: "مثلاً ۲۰٬۰۰۰",
+    lookupEmpty: "قیمت را وارد کنید تا سال‌های مرتبط نمایش داده شوند.",
+    lookupNoMatch: "سال مطابقی در داده‌های ثبت‌شده پیدا نشد.",
+    lookupNote: "تطبیق با بازه کمترین و بیشترین قیمت ثبت‌شده است؛ به معنی ثبت معامله دقیقاً با این قیمت نیست.",
+    explorerIn: "در سال",
+    explorerMissing: "برای این سال داده معتبر ثبت نشده است.",
+    explorerLoading: "در حال دریافت داده‌ها…",
+    explorerNote: "اطلاعات از داده‌های ثبت‌شده سایت است. قیمت‌های سال جاری تا آخرین تاریخ داده محاسبه شده‌اند.",
     desktopFeaturesTitle: "امکانات بیشتر در نسخه دسکتاپ",
     desktopFeaturesNote: "برای استفاده از امکانات بیشتر سایت، مثل محاسبه‌گر قیمت‌های مختلف به دلخواه شما، مثلاً «۱۲۰ دلار چقدر می‌شده؟» و همچنین دیدن جدول بزرگ از همه داده‌ها کنار هم، سایت را در حالت دسکتاپ مرورگر یا روی رایانه باز کنید.",
     understand: "متوجه شدم",
@@ -109,6 +122,19 @@ const translations = {
     sourcesUsed: "Sources used",
     whySite: "Why this site?",
     all: "All",
+    explorer: "Explore prices",
+    lookupPrice: "Price in tomans",
+    lookupDollar: "Per 1 dollar",
+    lookupGold: "Per 1 gram of 18k gold",
+    lookupCoin: "Per 1 Bahar Azadi coin",
+    lookupHint: "For example, 20,000",
+    lookupEmpty: "Enter a price to see matching years.",
+    lookupNoMatch: "No matching year was found in the saved data.",
+    lookupNote: "Matches use recorded minimum–maximum ranges; they do not confirm a trade at that exact price.",
+    explorerIn: "in year",
+    explorerMissing: "No reliable data is recorded for this year.",
+    explorerLoading: "Loading data…",
+    explorerNote: "Information comes from the site's saved data. Current-year prices cover observations through the latest data date.",
     desktopFeaturesTitle: "More features on desktop",
     desktopFeaturesNote: "For more features, such as calculating values for an amount of your choice—for example, ‘How much was 120 dollars worth?’—and viewing a large table with all data side by side, open the site in your browser's desktop mode or on a computer.",
     understand: "I understand",
@@ -182,6 +208,9 @@ document.addEventListener("alpine:init", () =>
     error: false,
     series: seriesKeys.includes(initialSeries) ? initialSeries : "dollar",
     amounts: { dollar: 100, gold: 10, coin: 1, wage: 100 },
+    explorerYear: null,
+    explorerPrice: "",
+    explorerSeries: "dollar",
     mobileFeaturesAcknowledged: preference("mobileFeaturesAcknowledged") === "true",
     governmentYear: null,
     selectedGovernmentPerson: null,
@@ -380,6 +409,46 @@ document.addEventListener("alpine:init", () =>
         en,
         fa: this.data?.years.flatMap(row => row.government).find(person => person.en === en)?.fa || en,
       }));
+    },
+    showExplorer() {
+      this.explorerSeries = "dollar";
+      this.explorerYear = this.explorerYears[0]?.year ?? null;
+      this.$refs.explorerDialog.showModal();
+    },
+    get explorerYears() {
+      return [...(this.data?.years || [])].sort((a, b) => b.year - a.year);
+    },
+    updateExplorerPrice(value) {
+      const normalized = String(value).replace(/[۰-۹]/g, digit => "۰۱۲۳۴۵۶۷۸۹".indexOf(digit)).replace(/[٠-٩]/g, digit => "٠١٢٣٤٥٦٧٨٩".indexOf(digit)).replace(/[,٬\s]/g, "");
+      if (/^\d*$/.test(normalized) && Number.isSafeInteger(Number(normalized))) this.explorerPrice = normalized;
+    },
+    get explorerPriceDisplay() {
+      return this.explorerPrice === "" ? "" : numberFormatter(this.locale, { maximumFractionDigits: 0 }).format(Number(this.explorerPrice));
+    },
+    get explorerMatches() {
+      const normalized = String(this.explorerPrice).replace(/[۰-۹]/g, digit => "۰۱۲۳۴۵۶۷۸۹".indexOf(digit)).replace(/[٠-٩]/g, digit => "٠١٢٣٤٥٦٧٨٩".indexOf(digit)).replace(/[,٬\s]/g, "");
+      const price = Number(normalized);
+      if (!/^\d+(\.\d+)?$/.test(normalized) || !Number.isFinite(price) || price <= 0) return [];
+      return this.explorerYears.filter(row => {
+        const range = this.explorerSeries === "gold" ? row.goldGram : this.explorerSeries === "coin" ? row.coin : row;
+        return range && Number.isFinite(range.minimum) && Number.isFinite(range.maximum) && price >= range.minimum && price <= range.maximum;
+      });
+    },
+    get explorerRow() {
+      return this.data?.years.find(row => row.year === Number(this.explorerYear ?? this.explorerYears[0]?.year)) || null;
+    },
+    get explorerRange() {
+      const row = this.explorerRow;
+      if (!row) return null;
+      return this.explorerSeries === "gold" ? row.goldGram : this.explorerSeries === "coin" ? row.coin : row;
+    },
+    get explorerPriceNote() {
+      if (this.explorerSeries === "gold") return this.t.goldNote;
+      if (this.explorerSeries === "coin") return this.t.coinNote;
+      return this.data?.sources?.[this.explorerRow?.source]?.coverage || "";
+    },
+    get explorerSource() {
+      return this.data?.sources?.[this.explorerSeries === "dollar" ? this.explorerRow?.source : "tgjuGold"] || null;
     },
     showAbout() {
       this.$refs.aboutDialog.showModal();

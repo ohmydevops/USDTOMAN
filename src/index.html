@@ -118,6 +118,9 @@
           >
         </h1>
         <nav class="flex shrink-0 gap-1.5" aria-label="Preferences">
+          <button type="button" class="icon-button" @click="showExplorer()" :aria-label="t.explorer" :title="t.explorer" aria-haspopup="dialog" aria-controls="explorerDialog">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true" class="theme-icon"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"/><path d="M20 2v4m-2-2h4"/></svg>
+          </button>
           <button
             class="icon-button text-[10px] font-semibold leading-none"
             @click="toggleLanguage"
@@ -503,6 +506,27 @@
               <li x-text="t[key]"></li>
             </template>
           </ul>
+        </div>
+      </dialog>
+      <dialog id="explorerDialog" x-ref="explorerDialog" class="modal-dialog w-[calc(100%-24px)] max-w-md rounded-2xl border border-line bg-surface text-ink shadow-xl" aria-labelledby="explorer-title" @click.self="$refs.explorerDialog.close()">
+        <div class="p-4 sm:p-6" :dir="lang==='fa'?'rtl':'ltr'">
+          <header class="flex items-center justify-between gap-4">
+            <h2 id="explorer-title" class="text-lg font-semibold" x-text="t.explorer"></h2>
+            <button type="button" class="icon-button" @click="$refs.explorerDialog.close()" :aria-label="t.close">✕</button>
+          </header>
+          <div class="lookup-fields mt-4 grid grid-cols-1 sm:grid-cols-[minmax(180px,1fr)_minmax(0,1fr)] items-end gap-3">
+            <label class="lookup-asset text-xs text-muted" for="explorer-series"><span x-text="t.series"></span><select id="explorer-series" x-model="explorerSeries" class="mt-2 block max-w-[140px] rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink" autofocus><option value="dollar" x-text="t.lookupDollar"></option><option value="gold" x-text="t.lookupGold"></option><option value="coin" x-text="t.lookupCoin"></option></select></label>
+            <label class="text-xs text-muted" for="explorer-price"><span x-text="t.lookupPrice"></span><input id="explorer-price" type="text" inputmode="numeric" :value="explorerPriceDisplay" @input="updateExplorerPrice($event.target.value); $event.target.value=explorerPriceDisplay" :placeholder="t.lookupHint" :dir="lang==='fa'?'rtl':'ltr'" class="mt-2 block w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink" /></label>
+          </div>
+          <div class="explorer-results mt-4" aria-live="polite" tabindex="0">
+            <p class="text-sm text-muted" x-show="!data" x-text="error?t.error:t.explorerLoading"></p>
+            <p class="text-sm text-muted" x-show="data && !explorerPrice" x-text="t.lookupEmpty"></p>
+            <p class="text-sm text-muted" x-show="data && explorerPrice && !explorerMatches.length" x-text="t.lookupNoMatch"></p>
+            <ul class="divide-y divide-line">
+              <template x-for="row in explorerMatches" :key="row.year"><li class="py-3"><p class="font-semibold text-accent" x-text="t.year+' '+formatYear(row.year)"></p><p class="mt-1 text-xs leading-6 text-muted" x-text="t.government+': '+governmentName(row)"></p></li></template>
+            </ul>
+          </div>
+          <p class="mt-4 border-t border-line pt-3 text-[11px] leading-5 text-muted" x-text="t.lookupNote"></p>
         </div>
       </dialog>
       <dialog x-ref="mobileFeaturesDialog" class="modal-dialog w-[calc(100%-24px)] max-w-sm rounded-2xl border border-line bg-surface text-ink shadow-xl" aria-labelledby="mobile-features-title">

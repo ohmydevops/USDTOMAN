@@ -316,6 +316,61 @@ html[dir="rtl"] thead th[colspan="2"] {
   background: rgb(16 23 19 / 55%);
   backdrop-filter: blur(3px);
 }
+#explorerDialog {
+  height: min(560px, 85dvh);
+  overflow: hidden;
+}
+#explorerDialog > div {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+#explorerDialog header,
+#explorerDialog .grid,
+#explorerDialog > div > p {
+  flex-shrink: 0;
+}
+.explorer-results {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.lookup-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  line-height: 20px;
+}
+.lookup-fields input,
+.lookup-fields select {
+  width: 100%;
+  max-width: none;
+  height: 44px;
+  margin-top: 0;
+  line-height: 20px;
+  outline-color: var(--accent);
+}
+.lookup-asset {
+  position: relative;
+}
+.lookup-asset select {
+  appearance: none;
+  padding-inline-end: 32px;
+}
+.lookup-asset::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: 14px;
+  bottom: 19px;
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid var(--accent);
+  border-bottom: 1.5px solid var(--accent);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
 .portrait-tooltip {
   position: fixed;
   inset: auto;
