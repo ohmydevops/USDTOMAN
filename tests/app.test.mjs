@@ -31,6 +31,25 @@ function createApp(saved = {}, intl = Intl) {
   return { app: factory(), root, historyUrl: () => historyUrl };
 }
 
+test("mobile feature notice appears only on mobile until acknowledged", () => {
+  const saved = {};
+  const { app } = createApp(saved);
+  let opened = 0, closed = 0;
+  app.$refs = { mobileFeaturesDialog: { showModal: () => opened++, close: () => closed++ } };
+  app.showMobileFeatures(1200);
+  assert.equal(opened, 0);
+  app.showMobileFeatures(400);
+  assert.equal(opened, 1);
+  app.acknowledgeMobileFeatures();
+  assert.equal(closed, 1);
+  app.showMobileFeatures(400);
+  assert.equal(opened, 1);
+  const restored = createApp(saved).app;
+  restored.$refs = app.$refs;
+  restored.showMobileFeatures(400);
+  assert.equal(opened, 1);
+});
+
 test("URL synchronization includes the dollar series explicitly", () => {
   const { app, historyUrl } = createApp();
   app.setSeries("gold");

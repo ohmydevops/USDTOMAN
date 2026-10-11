@@ -38,6 +38,9 @@ const translations = {
     sourcesUsed: "منابع استفاده شده",
     whySite: "چرا این سایت؟",
     all: "همه",
+    desktopFeaturesTitle: "امکانات بیشتر در نسخه دسکتاپ",
+    desktopFeaturesNote: "برای استفاده از امکانات بیشتر سایت، مثل محاسبه‌گر قیمت‌های مختلف به دلخواه شما، مثلاً «۱۲۰ دلار چقدر می‌شده؟» و همچنین دیدن جدول بزرگ از همه داده‌ها کنار هم، سایت را در حالت دسکتاپ مرورگر یا روی رایانه باز کنید.",
+    understand: "متوجه شدم",
     siteFeatures: "امکانات سایت",
     featurePrices: "کمترین و بیشترین قیمت سالانه دلار، طلای ۱۸ عیار و سکه بهار آزادی به تومان",
     featureWages: "حداقل حقوق ماهانه، تورم سالانه و محاسبه حقوق به دلار",
@@ -106,6 +109,9 @@ const translations = {
     sourcesUsed: "Sources used",
     whySite: "Why this site?",
     all: "All",
+    desktopFeaturesTitle: "More features on desktop",
+    desktopFeaturesNote: "For more features, such as calculating values for an amount of your choice—for example, ‘How much was 120 dollars worth?’—and viewing a large table with all data side by side, open the site in your browser's desktop mode or on a computer.",
+    understand: "I understand",
     siteFeatures: "Site features",
     featurePrices: "Yearly lowest and highest dollar, 18k gold, and Bahar Azadi coin prices in tomans",
     featureWages: "Monthly minimum wage, annual inflation, and wage conversion to dollars",
@@ -176,6 +182,7 @@ document.addEventListener("alpine:init", () =>
     error: false,
     series: seriesKeys.includes(initialSeries) ? initialSeries : "dollar",
     amounts: { dollar: 100, gold: 10, coin: 1, wage: 100 },
+    mobileFeaturesAcknowledged: preference("mobileFeaturesAcknowledged") === "true",
     governmentYear: null,
     selectedGovernmentPerson: null,
     currentDate: new Date(),
@@ -197,6 +204,7 @@ document.addEventListener("alpine:init", () =>
       this.ensureDesktopSeries(window.innerWidth);
       this.syncPage();
       if (sortParameters.get("credits") === "1") this.$nextTick(() => this.$refs.creditsDialog.showModal());
+      else this.$nextTick(() => this.showMobileFeatures(window.innerWidth));
       await this.refreshData();
       this.onOnline = () => this.refreshData();
       this.onVisible = () => {
@@ -265,6 +273,15 @@ document.addEventListener("alpine:init", () =>
       this.series = key;
       if (key === "all") this.sortKey = "year";
       this.syncUrl();
+    },
+    showMobileFeatures(width) {
+      if (width < 1024 && !this.mobileFeaturesAcknowledged)
+        this.$refs.mobileFeaturesDialog.showModal();
+    },
+    acknowledgeMobileFeatures() {
+      this.mobileFeaturesAcknowledged = true;
+      remember("mobileFeaturesAcknowledged", "true");
+      this.$refs.mobileFeaturesDialog.close();
     },
     ensureDesktopSeries(width) {
       if (width < 1024 && this.series === "all") this.setSeries("dollar");
