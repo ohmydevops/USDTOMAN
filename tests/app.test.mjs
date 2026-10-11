@@ -192,6 +192,20 @@ test("translations have matching Persian and English text", () => {
   for (const text of Object.values(app.t)) assert.ok(text.length);
 });
 
+test("data sources include coin and supporting references without duplicate URLs", () => {
+  const { app } = createApp();
+  assert.equal(app.dataSources.length, 0);
+  app.data = { sources: {
+    gold: { name: "Gold", url: "https://example.test/gold", coinUrl: "https://example.test/coin", references: ["https://example.test/circular", "https://example.test/gold"] },
+    inflation: { name: "Inflation", url: "https://example.test/inflation", references: { 1404: "https://example.test/1404" } },
+  } };
+  const urls = Array.from(app.dataSources, source => source.url);
+  assert.deepEqual(urls, ["https://example.test/gold", "https://example.test/coin", "https://example.test/circular", "https://example.test/inflation", "https://example.test/1404"]);
+  assert.ok(app.dataSources.find(source => source.url.endsWith("1404")).name.includes("۱۴۰۴"));
+  app.toggleLanguage();
+  assert.ok(app.dataSources.find(source => source.url.endsWith("1404")).name.includes("1404"));
+});
+
 test("source modal includes unique government and leadership references", () => {
   const { app } = createApp();
   assert.ok(app.governmentSources.includes("https://www.archontology.org/nations/iran/00_1979_td_pr.php"));

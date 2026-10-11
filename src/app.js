@@ -325,6 +325,23 @@ document.addEventListener("alpine:init", () =>
         fa: this.data?.years.flatMap(row => row.government).find(person => person.en === en)?.fa || en,
       }));
     },
+    get dataSources() {
+      const links = new Map();
+      const add = (url, name) => {
+        if (url && !links.has(url)) links.set(url, { url, name });
+      };
+      for (const source of Object.values(this.data?.sources || {})) {
+        add(source.url, source.name);
+        add(source.coinUrl, this.t.coin);
+        for (const [key, url] of Object.entries(source.references || {})) {
+          const label = Array.isArray(source.references)
+            ? (this.lang === "fa" ? "مرجع " : "Reference ") + this.formatYear(Number(key) + 1)
+            : this.formatYear(Number(key));
+          add(url, source.name + " · " + label);
+        }
+      }
+      return [...links.values()];
+    },
     get governmentSources() {
       return [...new Set([
         ...governmentData.records.map(person => person.source),
