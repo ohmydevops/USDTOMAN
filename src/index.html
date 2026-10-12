@@ -188,8 +188,7 @@
         <table x-show="series==='all'" class="all-data-table hidden w-full table-fixed border-collapse text-xs lg:table">
           <thead class="sticky top-0 z-10 bg-tint text-muted">
             <tr>
-              <th class="w-[64px] px-2 py-3"><button type="button" class="w-full text-center" @click="sortBy('year')" x-text="t.year + (ascending?' ↑':' ↓')"></button></th>
-              <th class="section-end w-[96px] px-2 py-3 text-center" x-text="t.government"></th>
+              <th class="section-end w-[112px] px-2 py-3"><button type="button" class="w-full text-center" @click="sortBy('year')" x-text="t.year + (ascending?' ↑':' ↓')"></button></th>
               <template x-for="column in allColumns" :key="column.key">
                 <th class="px-2 py-3 text-center font-medium" :class="{'section-end': ['maximum', 'goldMaximum', 'coinMaximum', 'minimumWage'].includes(column.key)}"><span x-text="column.label"></span><small class="block text-[9px] font-normal" x-show="column.key!=='inflation'">(<strong x-show="column.range" x-text="column.range"></strong><span x-text="(column.range ? (lang==='fa'?' به ':' in ') : '') + t.unit"></span>)</small></th>
               </template>
@@ -198,8 +197,7 @@
           <tbody class="divide-y divide-line">
             <template x-for="row in sortedRows" :key="row.year">
               <tr class="hover:bg-tint">
-                <td class="px-2 py-3 text-center tabular-nums" x-text="formatYear(row.year)"></td>
-                <td class="section-end px-2 py-2 text-center"><button type="button" class="portrait-person government-trigger" @click="showGovernment(row)" aria-haspopup="dialog" :aria-label="t.governmentTree+' '+formatYear(row.year)"><img :src="portrait(primaryPerson(row))" :alt="primaryPerson(row)[lang]" width="36" height="36" loading="lazy" /><span class="government-details-arrow" aria-hidden="true">↗</span></button></td>
+                <td class="section-end px-2 py-2 text-center"><div class="flex items-center justify-center gap-2" :dir="lang==='fa'?'rtl':'ltr'"><bdi dir="ltr" x-text="formatYear(row.year)"></bdi><button type="button" class="portrait-person government-trigger" @click="showGovernment(row)" aria-haspopup="dialog" :aria-label="t.governmentTree+' '+formatYear(row.year)"><img :src="portrait(primaryPerson(row))" :alt="primaryPerson(row)[lang]" width="36" height="36" loading="lazy" /><span class="government-details-arrow" aria-hidden="true">↗</span></button></div></td>
                 <template x-for="column in allColumns" :key="column.key"><td class="px-1 py-3 text-center tabular-nums" :class="{'section-end': ['maximum', 'goldMaximum', 'coinMaximum', 'minimumWage'].includes(column.key)}"><bdi dir="ltr" x-text="allValue(row, column.key)"></bdi></td></template>
               </tr>
             </template>
@@ -215,16 +213,10 @@
               <template x-for="column in columns" :key="column.key"
                 ><th
                   scope="col"
-                  :class="column.key==='government'?'w-[16%] lg:w-[12%]':column.key==='year'?'w-[64px] lg:w-[9%]':column.key==='maximum'?'w-[40%] lg:w-[29%]':'w-[30%] lg:w-[26%]'"
-                  :aria-sort="column.key==='government'?null:sortKey===column.key?(ascending?'ascending':'descending'):'none'"
+                  :class="column.key==='year'?'w-[104px] lg:w-[16%]':column.key==='maximum'?'lg:w-[32%]':'lg:w-[28%]'"
+                  :aria-sort="sortKey===column.key?(ascending?'ascending':'descending'):'none'"
                 >
-                  <span
-                    x-show="column.key==='government'"
-                    class="block px-2 py-3 text-center font-medium sm:px-4 sm:py-3.5"
-                    x-text="t.government"
-                  ></span>
                   <button
-                    x-show="column.key!=='government'"
                     class="flex w-full items-center justify-center gap-1.5 px-2 py-3 text-center font-medium transition-colors hover:text-ink sm:px-4 sm:py-3.5"
                     @click="sortBy(column.key)"
                     :class="{'category-minimum': column.key==='minimum', 'category-maximum': column.key==='maximum'}"
@@ -306,12 +298,7 @@
                   dir="ltr"
                   class="px-2 py-1.5 text-center text-sm sm:text-base font-medium tabular-nums lg:px-4 sm:py-2"
                 >
-                  <bdi dir="ltr" x-text="formatYear(row.year)"></bdi>
-                </td>
-                <td
-                  class="px-2 py-1.5 text-[10px] leading-4 text-muted sm:px-4 sm:py-2 sm:text-sm sm:leading-5"
-                >
-                  <div class="government-portraits">
+                  <div class="flex items-center justify-center gap-2" :dir="lang==='fa'?'rtl':'ltr'"><bdi dir="ltr" x-text="formatYear(row.year)"></bdi>
                     <template x-for="person in [primaryPerson(row)]" :key="person.en">
                       <button
                         type="button"

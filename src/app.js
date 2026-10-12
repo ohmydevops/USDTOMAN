@@ -228,7 +228,6 @@ document.addEventListener("alpine:init", () =>
     ascending: sortParameters.get("order") === "asc",
     columns: [
       { key: "year" },
-      { key: "government" },
       { key: "minimum", unit: true },
       { key: "maximum", unit: true },
     ],
