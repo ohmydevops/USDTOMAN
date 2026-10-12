@@ -37,6 +37,9 @@ const translations = {
     governmentSources: "منابع هیئت دولت",
     sourcesUsed: "منابع استفاده شده",
     whySite: "چرا این سایت؟",
+    readThis: "لطفاً این را بخوانید",
+    contactNote: "برای پیشنهاد امکانات جدید، ارسال بازخورد یا تماس با من، می‌توانید به این نشانی ایمیل بزنید:",
+    usageResponsibility: "مسئولیت هرگونه استفاده از این سایت و اطلاعات آن بر عهده کاربر است. ما صرفاً داده‌های عمومی را گردآوری و مرتب می‌کنیم و مسئولیتی در قبال نحوه استفاده افراد از این سایت نداریم.",
     all: "همه",
     explorer: "کاوش قیمت‌ها",
     lookupPrice: "قیمت به تومان",
@@ -55,6 +58,7 @@ const translations = {
     desktopFeaturesNote: "برای استفاده از امکانات بیشتر سایت، مثل محاسبه‌گر قیمت‌های مختلف به دلخواه شما، مثلاً «۱۲۰ دلار چقدر می‌شده؟» و همچنین دیدن جدول بزرگ از همه داده‌ها کنار هم، سایت را در حالت دسکتاپ مرورگر یا روی رایانه باز کنید.",
     understand: "متوجه شدم",
     siteFeatures: "امکانات سایت",
+    publicDataNote: "این سایت صرفاً برای گردآوری، مرتب‌سازی و نمایش تجمیعی داده‌های عمومی و درک بهتر اطلاعات تاریخی ساخته شده است و هدف دیگری ندارد. فعالیت آن در چارچوب قوانین و مقررات کشور است و هیچ‌گونه جهت‌گیری سیاسی یا تبلیغی ندارد.",
     featurePrices: "کمترین و بیشترین قیمت سالانه دلار، طلای ۱۸ عیار و سکه بهار آزادی به تومان",
     featureWages: "حداقل حقوق ماهانه، تورم سالانه و محاسبه حقوق به دلار",
     featureConversion: "محاسبه ارزش مبلغ دلخواه دلار، مقدار طلا یا تعداد سکه به تومان در هر سال",
@@ -121,6 +125,9 @@ const translations = {
     governmentSources: "Cabinet sources",
     sourcesUsed: "Sources used",
     whySite: "Why this site?",
+    readThis: "Please read this",
+    contactNote: "For feature requests, feedback, or other inquiries, you can email me at:",
+    usageResponsibility: "Users are responsible for any use of this website and its information. We only collect and organize public data and are not responsible for how people use this website.",
     all: "All",
     explorer: "Explore prices",
     lookupPrice: "Price in tomans",
@@ -139,6 +146,7 @@ const translations = {
     desktopFeaturesNote: "For more features, such as calculating values for an amount of your choice—for example, ‘How much was 120 dollars worth?’—and viewing a large table with all data side by side, open the site in your browser's desktop mode or on a computer.",
     understand: "I understand",
     siteFeatures: "Site features",
+    publicDataNote: "This site exists solely to collect, organize, and display aggregated public data for a better understanding of historical information, with no other purpose. It operates within the country's laws and regulations and has no political or promotional agenda.",
     featurePrices: "Yearly lowest and highest dollar, 18k gold, and Bahar Azadi coin prices in tomans",
     featureWages: "Monthly minimum wage, annual inflation, and wage conversion to dollars",
     featureConversion: "Calculate the value of a chosen dollar amount, gold weight, or number of coins in tomans for each year",
@@ -212,6 +220,7 @@ document.addEventListener("alpine:init", () =>
     explorerPrice: "",
     explorerSeries: "dollar",
     mobileFeaturesAcknowledged: preference("mobileFeaturesAcknowledged") === "true",
+    readThisAcknowledged: preference("readThisAcknowledged") === "true",
     governmentYear: null,
     selectedGovernmentPerson: null,
     currentDate: new Date(),
@@ -232,8 +241,7 @@ document.addEventListener("alpine:init", () =>
     async init() {
       this.ensureDesktopSeries(window.innerWidth);
       this.syncPage();
-      if (sortParameters.get("credits") === "1") this.$nextTick(() => this.$refs.creditsDialog.showModal());
-      else this.$nextTick(() => this.showMobileFeatures(window.innerWidth));
+      this.$nextTick(() => this.showWelcome(window.innerWidth));
       await this.refreshData();
       this.onOnline = () => this.refreshData();
       this.onVisible = () => {
@@ -303,14 +311,28 @@ document.addEventListener("alpine:init", () =>
       if (key === "all") this.sortKey = "year";
       this.syncUrl();
     },
+    showWelcome(width) {
+      if (!this.readThisAcknowledged) this.showReadThis();
+      else if (width < 1024 && !this.mobileFeaturesAcknowledged) this.showMobileFeatures(width);
+      else if (sortParameters.get("credits") === "1") this.$refs.creditsDialog.showModal();
+    },
+    acknowledgeReadThis(width = window.innerWidth) {
+      if (this.readThisAcknowledged) return;
+      this.readThisAcknowledged = true;
+      remember("readThisAcknowledged", "true");
+      this.showWelcome(width);
+    },
     showMobileFeatures(width) {
       if (width < 1024 && !this.mobileFeaturesAcknowledged)
         this.$refs.mobileFeaturesDialog.showModal();
     },
     acknowledgeMobileFeatures() {
+      this.onMobileFeaturesClosed();
+      this.$refs.mobileFeaturesDialog.close();
+    },
+    onMobileFeaturesClosed() {
       this.mobileFeaturesAcknowledged = true;
       remember("mobileFeaturesAcknowledged", "true");
-      this.$refs.mobileFeaturesDialog.close();
     },
     ensureDesktopSeries(width) {
       if (width < 1024 && this.series === "all") this.setSeries("dollar");
@@ -452,6 +474,9 @@ document.addEventListener("alpine:init", () =>
     },
     showAbout() {
       this.$refs.aboutDialog.showModal();
+    },
+    showReadThis() {
+      this.$refs.readThisDialog.showModal();
     },
     get dataSources() {
       const links = new Map();

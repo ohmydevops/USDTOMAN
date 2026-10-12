@@ -2,6 +2,7 @@
 
 ## Development
 
+- At the start of each session that involves editing the website, run `npm run dev` and open `http://127.0.0.1:4173/` in the Codex in-app browser. Reuse an existing project dev server and browser tab when available instead of starting duplicates. Keep the server running while editing so changes reload automatically.
 - Commit or push only when the developer explicitly requests that action.
 - Edit source files, not generated `dist/` files. Use Alpine.js for interaction and Tailwind CSS for UI.
 - For behavior changes, write a meaningful unit test first, then implement. Use unit tests only; avoid tests of documentation wording, CSS classes, or layout details.

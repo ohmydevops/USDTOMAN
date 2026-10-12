@@ -390,6 +390,24 @@ html[dir="rtl"] thead th[colspan="2"] {
   display: block;
 }
 @media (max-width: 639px) {
+  main {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+  }
+  .site-footer {
+    position: fixed;
+    inset-inline: 12px;
+    bottom: 0;
+    z-index: 20;
+    height: calc(48px + env(safe-area-inset-bottom, 0px));
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--page);
+  }
+  .site-footer nav {
+    min-width: 0;
+    flex-shrink: 1;
+  }
   .government-portraits {
     gap: 0;
   }

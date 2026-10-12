@@ -508,6 +508,18 @@
           </ul>
         </div>
       </dialog>
+      <dialog id="readThisDialog" x-ref="readThisDialog" class="modal-dialog w-[calc(100%-24px)] max-w-lg rounded-2xl border border-line bg-surface text-ink shadow-xl" aria-labelledby="read-this-title" @click.self="$refs.readThisDialog.close()" @close="acknowledgeReadThis()">
+        <div class="p-4 sm:p-6" :dir="lang==='fa'?'rtl':'ltr'">
+          <header class="flex items-center justify-between gap-4">
+            <h2 id="read-this-title" class="text-lg font-semibold" x-text="t.readThis"></h2>
+            <button type="button" class="icon-button" @click="$refs.readThisDialog.close()" :aria-label="t.close" autofocus>✕</button>
+          </header>
+          <p class="mt-4 text-sm leading-7 text-muted" x-text="t.publicDataNote"></p>
+          <p class="mt-4 text-sm leading-7 text-muted" x-text="t.usageResponsibility"></p>
+          <p class="mt-4 text-sm leading-7 text-muted" x-text="t.contactNote"></p>
+          <p class="text-left text-sm leading-7 text-muted" dir="ltr">ohmydevs [at] gmail [dot] com</p>
+        </div>
+      </dialog>
       <dialog id="explorerDialog" x-ref="explorerDialog" class="modal-dialog w-[calc(100%-24px)] max-w-md rounded-2xl border border-line bg-surface text-ink shadow-xl" aria-labelledby="explorer-title" @click.self="$refs.explorerDialog.close()">
         <div class="p-4 sm:p-6" :dir="lang==='fa'?'rtl':'ltr'">
           <header class="flex items-center justify-between gap-4">
@@ -529,14 +541,14 @@
           <p class="mt-4 border-t border-line pt-3 text-[11px] leading-5 text-muted" x-text="t.lookupNote"></p>
         </div>
       </dialog>
-      <dialog x-ref="mobileFeaturesDialog" class="modal-dialog w-[calc(100%-24px)] max-w-sm rounded-2xl border border-line bg-surface text-ink shadow-xl" aria-labelledby="mobile-features-title">
+      <dialog x-ref="mobileFeaturesDialog" class="modal-dialog w-[calc(100%-24px)] max-w-sm rounded-2xl border border-line bg-surface text-ink shadow-xl" aria-labelledby="mobile-features-title" @close="onMobileFeaturesClosed()">
         <div class="p-5" :dir="lang==='fa'?'rtl':'ltr'">
           <h2 id="mobile-features-title" class="text-base font-semibold" x-text="t.desktopFeaturesTitle"></h2>
           <p class="mt-3 text-sm leading-7 text-muted" x-text="t.desktopFeaturesNote"></p>
           <button type="button" class="mt-5 w-full rounded-lg border border-line bg-tint px-4 py-2 text-sm font-medium text-accent hover:bg-surface" @click="acknowledgeMobileFeatures()" x-text="t.understand" autofocus></button>
         </div>
       </dialog>
-      <footer class="mt-4 flex shrink-0 items-center justify-between gap-3 border-t border-line pt-3 text-[10px] text-muted" dir="ltr">
+      <footer class="site-footer mt-4 flex shrink-0 items-center justify-between gap-3 border-t border-line pt-3 text-[10px] text-muted" dir="ltr">
         <p class="hidden min-w-0 flex-wrap items-center gap-1 sm:flex" :dir="lang==='fa'?'rtl':'ltr'">
           <span class="text-[11px] leading-none" aria-hidden="true">❤️</span>
           <span x-text="t.createdWith">ساخته شده با علاقه و درد توسط</span>
@@ -546,6 +558,7 @@
         <nav class="ml-auto flex shrink-0 flex-wrap justify-end gap-x-3 gap-y-1" :dir="lang==='fa'?'rtl':'ltr'">
           <button type="button" class="source-link py-1" @click="showAbout()" aria-haspopup="dialog" aria-controls="aboutDialog" x-text="t.whySite">چرا این سایت؟</button>
           <button type="button" class="source-link py-1" @click="$refs.creditsDialog.showModal()" aria-haspopup="dialog" x-text="t.sourcesUsed">منابع استفاده شده</button>
+          <button type="button" class="source-link py-1" @click="showReadThis()" aria-haspopup="dialog" aria-controls="readThisDialog" x-text="t.readThis">لطفاً این را بخوانید</button>
         </nav>
       </footer>
     </main>

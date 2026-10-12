@@ -31,6 +31,19 @@ function createApp(saved = {}, intl = Intl) {
   return { app: factory(), root, historyUrl: () => historyUrl };
 }
 
+test("public data notice opens its own dialog without opening the about dialog", () => {
+  const { app } = createApp();
+  let noticeOpened = 0;
+  let aboutOpened = 0;
+  app.$refs = {
+    readThisDialog: { showModal: () => noticeOpened++ },
+    aboutDialog: { showModal: () => aboutOpened++ },
+  };
+  app.showReadThis();
+  assert.equal(noticeOpened, 1);
+  assert.equal(aboutOpened, 0);
+});
+
 test("lookup input rejects zero while allowing the field to be cleared", () => {
   const { app } = createApp();
   app.updateExplorerPrice("0");
@@ -96,6 +109,41 @@ test("year explorer updates ranges independently and handles missing history", (
   app.explorerSeries = "dollar";
   assert.equal(app.explorerRange.minimum, 2889);
   assert.equal(app.series, "dollar");
+});
+
+test("welcome dialogs show the public notice first and persist every dismissal", () => {
+  const saved = {};
+  const { app } = createApp(saved);
+  const opened = [];
+  app.$refs = {
+    readThisDialog: { showModal: () => opened.push("notice") },
+    mobileFeaturesDialog: { showModal: () => opened.push("features") },
+  };
+  app.showWelcome(400);
+  assert.deepEqual(opened, ["notice"]);
+  app.acknowledgeReadThis(400);
+  assert.deepEqual(opened, ["notice", "features"]);
+  app.acknowledgeReadThis(400);
+  assert.equal(opened.length, 2);
+  app.onMobileFeaturesClosed();
+  const restored = createApp(saved).app;
+  restored.$refs = app.$refs;
+  restored.showWelcome(400);
+  assert.equal(opened.length, 2);
+  restored.showReadThis();
+  assert.equal(opened.at(-1), "notice");
+  restored.acknowledgeReadThis(400);
+  assert.equal(opened.length, 3);
+});
+
+test("desktop welcome only shows the public notice", () => {
+  const { app } = createApp();
+  let opened = 0;
+  app.$refs = { readThisDialog: { showModal: () => opened++ } };
+  app.showWelcome(1200);
+  app.acknowledgeReadThis(1200);
+  app.showWelcome(1200);
+  assert.equal(opened, 1);
 });
 
 test("mobile feature notice appears only on mobile until acknowledged", () => {
